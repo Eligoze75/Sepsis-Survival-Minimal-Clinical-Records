@@ -1,2 +1,5 @@
-# Sepsis-Survival-Minimal-Clinical-Records
-MDS Sepsis Survival Minimal Clinical Records analysis for DSCI 522. Team 15.
+# Sepsis Survival Minimal Clinical Records
+
+## Team 15 DSCI 522 project: MDS Sepsis Survival Minimal Clinical Records analysis
+
+The dataset consists of 110,204 admissions of 84,811 hospitalized subjects between 2011 and 2012 in Norway who were diagnosed with infections, systemic inflammatory response syndrome, sepsis by causative microbes, or septic shock. The prediction task is to determine whether a patient survived or is deceased at a time of about 9 days after collecting their medical record at the hospital. This is an important prediction problem in clinical medicine. Sepsis is a life-threatening condition triggered by an immune overreaction to infection, leading to organ failure or even death. Sepsis is associated with immediate death risk, often killing patients within one hour. This renders many laboratory tests and hospital analyses impractical for timely diagnosis and treatment. Being able to predict the survival of patients within minutes with as few and easy-to-retrieve medical features as possible is very important.
