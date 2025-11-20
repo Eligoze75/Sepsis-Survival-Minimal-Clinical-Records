@@ -1,9 +1,16 @@
 import pandas as pd
 import numpy as np
 from scipy import stats
+from scipy.stats import loguniform
 import matplotlib.pyplot as plt
 import seaborn as sns
+import joblib
+import requests
+import zipfile
+from sklearn.compose import make_column_transformer
+from sklearn.pipeline import make_pipeline
 from sklearn.linear_model import LogisticRegression
+from sklearn.preprocessing import (StandardScaler, OneHotEncoder)
 from sklearn.metrics import (
     roc_auc_score,
     precision_score,
@@ -11,7 +18,13 @@ from sklearn.metrics import (
     f1_score,
     log_loss,
 )
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import (
+    RandomizedSearchCV,
+    cross_val_score,
+    cross_validate,
+    train_test_split,
+)
+
 import shap
 
 
