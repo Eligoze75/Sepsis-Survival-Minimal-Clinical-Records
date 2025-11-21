@@ -3,6 +3,7 @@ import numpy as np
 from scipy import stats
 from scipy.stats import loguniform
 import matplotlib.pyplot as plt
+import altair as alt
 import seaborn as sns
 import joblib
 import requests
@@ -26,7 +27,45 @@ from sklearn.model_selection import (
 )
 import shap
 
+# Importing Data
+def load_ucisepsis(inner_filename):
+    """
+    Downloads and extracts the Sepsis Survival Minimal Clinical Records dataset
+    from the UCI Machine Learning Repository.
 
+    Parameters:
+        inner_filename (str): The CSV file to load from inside the inner ZIP.
+
+    Returns:
+        pandas.DataFrame: The loaded dataset.
+    """
+    
+    # URL of the outer zip
+    url = (
+        "https://archive.ics.uci.edu/static/public/827/"
+        "sepsis%2Bsurvival%2Bminimal%2Bclinical%2Brecords.zip"
+    )
+
+    # Download outer zip
+    r = requests.get(url)
+    outer_zip = zipfile.ZipFile(io.BytesIO(r.content))
+
+    # Extract inner zip
+    inner_zip_name = outer_zip.namelist()[0]
+    inner_zip_bytes = outer_zip.read(inner_zip_name)
+    inner_zip = zipfile.ZipFile(io.BytesIO(inner_zip_bytes))
+
+    # Safety check: ensure the requested file exists
+    if inner_filename not in inner_zip.namelist():
+        raise ValueError(
+            f"File '{inner_filename}' not found.\n"
+            f"Available files: {inner_zip.namelist()}"
+        )
+
+    # Load CSV
+    with inner_zip.open(inner_filename) as f:
+        return pd.read_csv(f)
+    
 # EDA
 def plot_bivariates(df, var, y, figsize=(10, 5)):
     """
