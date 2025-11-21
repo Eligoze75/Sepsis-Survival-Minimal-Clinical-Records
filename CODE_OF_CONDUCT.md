@@ -1,4 +1,4 @@
-Code of Conduct: DSCI 522: Group15
+# Code of Conduct: DSCI 522: Group15
 
 # Introduction  
 Our group is committed to building a collaborative, safe, and respectful environment for learning, sharing differing viewpoints & contributing. Everyone participating in this project whether through discussions, code contributions, documentation, or reviews is expected to help maintain a positive and supportive space.
