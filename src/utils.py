@@ -1,9 +1,8 @@
 import pandas as pd
 import numpy as np
-from scipy import stats
-from scipy.stats import loguniform
+from scipy.stats import loguniform, uniform, randint
 import matplotlib.pyplot as plt
-import altair as alt
+# import altair as alt
 import seaborn as sns
 import joblib
 import requests
@@ -11,6 +10,7 @@ import zipfile
 from sklearn.compose import make_column_transformer
 from sklearn.pipeline import make_pipeline
 from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import (StandardScaler, OneHotEncoder)
 from sklearn.metrics import (
     roc_auc_score,
@@ -26,6 +26,7 @@ from sklearn.model_selection import (
     train_test_split,
 )
 import shap
+import io
 
 # Importing Data
 def load_ucisepsis(inner_filename):
