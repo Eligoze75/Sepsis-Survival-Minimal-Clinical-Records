@@ -4,13 +4,19 @@ This project focuses on predicting patient survival using machine learning techn
 
 ## Project Overview
 
-[The dataset](https://archive.ics.uci.edu/dataset/827/sepsis+survival+minimal+clinical+records) contains 110,204 hospital admissions from 84,811 patients in Norway between 2011 and 2012. All patients were diagnosed with infections, systemic inflammatory response syndrome, sepsis caused by microbes, or septic shock.
+Sepsis is a life-threatening condition where the body's immune system overreacts to infection, potentially causing organ failure. Quick diagnosis is crucial since sepsis can progress rapidly, sometimes within an hour.
 
-The prediction task is to determine whether a patient survived or deceased approximately nine days after their medical record was collected. Sepsis is a life-threatening condition characterized by an extreme immune response to infection, often leading to organ failure or death. Its progression can be extremely rapid, sometimes within one hour, making timely diagnosis and intervention challenging. Many laboratory tests require more time than what clinicians have available when treating severe sepsis cases.
+This project explores whether basic patient information Age, Sex, and number of prior Sepsis episodes can predict survival outcomes. We analyzed [a dataset](https://archive.ics.uci.edu/dataset/827/sepsis+survival+minimal+clinical+records) of over 110,000 hospital admissions from Norway (2011-2012) using a Logistic Regression model.
 
-Being able to predict patient survival quickly, using only a small set of easily obtainable medical features, can support faster decision making and potentially improve outcomes.
+**Key Findings:**
+- Age emerged as the strongest predictor: older patients have lower survival probability (SHAP value: 0.86)
+- The model achieved a ROC AUC of 0.59, showing limited predictive power
+- Sex and Episode Number had minimal impact on predictions
+- The dataset is highly imbalanced: 93% survivors vs. 7% non survivors
 
-## Goals
+**Conclusion:** While Age is an important mortality risk indicator, these basic demographic factors alone are not sufficient for accurate predictions. Additional clinical features (vital signs, lab values, pre existing conditions) would be needed to improve the model's performance.
+
+## Project Components
 
 This project includes the following components:
 
@@ -23,15 +29,20 @@ This project includes the following components:
 ## Repository Structure
 
 ```bash
-project/
+Sepsis-Survival-Minimal-Clinical-Records/
 ├── data/
-│   ├── raw/               # Original dataset
-│   └── processed/         # Cleaned and prepared data
-├── notebooks/             # EDA and experimentation
-├── src/                   # Data prep, training, evaluation scripts
-├── models/                # Saved model artifacts
-├── img/                   # Figures and output reports
-├── environment.yml        # Reproducible environment specification
+│   ├── processed/
+│   ├── s41598-020-73558-3_sepsis_survival_primary_cohort.csv
+│   ├── s41598-020-73558-3_sepsis_survival_study_cohort.csv
+│   └── s41598-020-73558-3_sepsis_survival_validation_cohort.csv
+├── src/
+│   ├── sepsis-predictor-report.ipynb                   # Main analysis notebook
+│   └── utils.py                                        # Helper functions
+├── models/
+├── environment.yml                                     # Conda environment
+├── conda-lock.yml                                      # Locked dependencies
+├── CONTRIBUTING.md                                     # Contribution guidelines
+├── LICENSE
 └── README.md
 ```
 
@@ -75,3 +86,17 @@ Activate the environment:
 ```bash
 conda activate sepsis_survival_venv
 ```
+
+## Contributing
+
+We welcome contributions! Whether you're a data scientist, clinician, or machine learning enthusiast, your input can help improve this project. Please read our [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on how to contribute.
+
+## Acknowledgments
+
+Thank you for exploring this project! We hope this analysis provides valuable insights into sepsis prediction and inspires further research. Whether you're here to learn, contribute, or simply explore, we appreciate your interest.
+
+Happy learning! 🎓
+
+---
+
+*For questions or discussions, feel free to open an issue or reach out to the maintainers.*
