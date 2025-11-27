@@ -4,13 +4,19 @@ This project focuses on predicting patient survival using machine learning techn
 
 ## Project Overview
 
-[The dataset](https://archive.ics.uci.edu/dataset/827/sepsis+survival+minimal+clinical+records) contains 110,204 hospital admissions from 84,811 patients in Norway between 2011 and 2012. All patients were diagnosed with infections, systemic inflammatory response syndrome, sepsis caused by microbes, or septic shock.
+Sepsis is a life-threatening condition where the body's immune system overreacts to infection, potentially causing organ failure. Quick diagnosis is crucial since sepsis can progress rapidly, sometimes within an hour.
 
-The prediction task is to determine whether a patient survived or deceased approximately nine days after their medical record was collected. Sepsis is a life-threatening condition characterized by an extreme immune response to infection, often leading to organ failure or death. Its progression can be extremely rapid, sometimes within one hour, making timely diagnosis and intervention challenging. Many laboratory tests require more time than what clinicians have available when treating severe sepsis cases.
+This project explores whether basic patient information Age, Sex, and number of prior Sepsis episodes can predict survival outcomes. We analyzed [a dataset](https://archive.ics.uci.edu/dataset/827/sepsis+survival+minimal+clinical+records) of over 110,000 hospital admissions from Norway (2011-2012) using a Logistic Regression model.
 
-Being able to predict patient survival quickly, using only a small set of easily obtainable medical features, can support faster decision making and potentially improve outcomes.
+**Key Findings:**
+- Age emerged as the strongest predictor: older patients have lower survival probability (SHAP value: 0.86)
+- The model achieved a ROC AUC of 0.59, showing limited predictive power
+- Sex and Episode Number had minimal impact on predictions
+- The dataset is highly imbalanced: 93% survivors vs. 7% non survivors
 
-## Goals
+**Conclusion:** While Age is an important mortality risk indicator, these basic demographic factors alone are not sufficient for accurate predictions. Additional clinical features (vital signs, lab values, pre existing conditions) would be needed to improve the model's performance.
+
+## Project Components
 
 This project includes the following components:
 
@@ -23,55 +29,90 @@ This project includes the following components:
 ## Repository Structure
 
 ```bash
-project/
+Sepsis-Survival-Minimal-Clinical-Records/
 ├── data/
-│   ├── raw/               # Original dataset
-│   └── processed/         # Cleaned and prepared data
-├── notebooks/             # EDA and experimentation
-├── src/                   # Data prep, training, evaluation scripts
-├── models/                # Saved model artifacts
-├── img/                   # Figures and output reports
-├── environment.yml        # Reproducible environment specification
+│   ├── processed/
+│   ├── s41598-020-73558-3_sepsis_survival_primary_cohort.csv
+│   ├── s41598-020-73558-3_sepsis_survival_study_cohort.csv
+│   └── s41598-020-73558-3_sepsis_survival_validation_cohort.csv
+├── src/
+│   ├── sepsis-predictor-report.ipynb                   # Main analysis notebook
+│   └── utils.py                                        # Helper functions
+├── models/
+├── environment.yml                                     # Conda environment
+├── conda-lock.yml                                      # Locked dependencies
+├── CONTRIBUTING.md                                     # Contribution guidelines
+├── LICENSE
 └── README.md
 ```
 
-## Environment Setup
+## Dependencies
 
-To reproduce the environment, run:
+-   [Docker](https://www.docker.com/)
+-   [VS Code](https://code.visualstudio.com/download)
+-   [VS Code Jupyter Extension](https://marketplace.visualstudio.com/items?itemName=ms-toolsai.jupyter)
 
-```bash
-conda env create -f environment.yml
-conda activate sepsis_survival_venv
+## Usage
+
+### Setup
+
+> If you are using Mac or Windows, ensure Docker Desktop is running.
+
+1.  Clone this GitHub repository.
+
+### Running the analysis
+
+1.  Using the command line on your computer to go to the project's root directory, then run the following command:
+
+``` bash
+docker compose up
 ```
 
-### Using the Conda Lock File
+2.  In the terminal output, find a URL which begins with `http://127.0.0.1:8888/lab?token=` Copy that URL and open it in your web browser.
 
-This repository also includes a conda-lock.yml file generated to ensure full reproducibility across platforms and installations. This file contains exact, fully resolved dependency versions.
+3.  To execute the analysis, open `reports/sepsis-prediction-report.ipynb` in Jupyter Lab then under the "Kernel" menu choose "Restart Kernel and Run All Cells...".
 
-To create the environment using the lock file:
+### Clean up
 
-Install conda-lock if you do not already have it:
+1.  To stop the container and remove associated resources, press `Ctrl` + `C` in the terminal where the container is running, then enter `docker compose rm`
 
-```bash
-pip install conda-lock
-```
+## **Developer notes**
 
-or via conda:
+### **Developer dependencies**
 
-```bash
-conda install -c conda-forge conda-lock
-```
+-   `conda` (version 25.7.0 or higher)
 
-Generate the environment from the lock file:
+-   `conda-lock` (version 3.0.4 or higher)
 
-```bash
-conda-lock install --name sepsis_survival_venv conda-lock.yml
-```
+### **Adding a new dependency**
 
-This will create (or update) the environment with the exact versions pinned in the lock file.
+1.  Create a new branch and add the dependency to the `environment.yml` file.
 
-Activate the environment:
+2.  Run the following command to update the `conda-linux-64.lock` file:
 
-```bash
-conda activate sepsis_survival_venv
-```
+    ``` bash
+    `conda-lock -k explicit --file environment.yml -p linux-64`
+    ```
+
+3.  Build the Docker image locally to verify it compiles and operates correctly.
+
+4.  Commit and push the updates to GitHub. A new Docker image tagged with the commit's SHA will automatically be built and pushed to Docker Hub.
+
+5.  Update the `docker-compose.yml` file and ensure the tag of the new container image is generated in your branch.
+
+6.  Submit a pull request to have these updates merged into the `main` branch.
+
+## Contributing
+
+We welcome contributions! Whether you're a data scientist, clinician, or machine learning enthusiast, your input can help improve this project. Please read our [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on how to contribute.
+
+## Acknowledgments
+
+Thank you for exploring this project! We hope this analysis provides valuable insights into sepsis prediction and inspires further research. Whether you're here to learn, contribute, or simply explore, we appreciate your interest.
+
+Happy learning! 🎓
+
+------------------------------------------------------------------------
+
+*For questions or discussions, feel free to open an issue or reach out to the maintainers.*
+
