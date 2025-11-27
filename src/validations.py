@@ -10,7 +10,8 @@ TARGET_DTYPE = int
 AGE_RANGE = pa.Check.between(0, 130)
 EPISODE_RANGE = pa.Check.between(0, 15)
 
-
+# This schema only validates for the presence of all required variables
+# and ensures that the possible values in the features make sense
 initial_schema = pa.DataFrameSchema(
     {
         "hospital_outcome": pa.Column(
@@ -25,6 +26,8 @@ initial_schema = pa.DataFrameSchema(
     ],
 )
 
+# This schema validates for the presence of all required variables
+# ensures that the possible values in the features make sense with context from the EDA
 test_schema = pa.DataFrameSchema(
     {
         "hospital_outcome": pa.Column(
@@ -39,6 +42,7 @@ test_schema = pa.DataFrameSchema(
     ],
 )
 
+# This schema is meant to be use to validate data for prediction
 prediction_schema = pa.DataFrameSchema(
     {
         "hospital_outcome": pa.Column(
