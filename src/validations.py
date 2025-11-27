@@ -9,10 +9,15 @@ EPISODE_DTYPE = int
 TARGET_DTYPE = int
 AGE_RANGE = pa.Check.between(0, 130)
 EPISODE_RANGE = pa.Check.between(0, 15)
+FEATURES = ["age", "sex", "episode_number"]
 
 
 def check_target_ratio(x):
     return (x.mean() > 0.5) & (x.mean() < 0.95)
+
+
+def check_empty_rows(df):
+    return ~(df[FEATURES].isna().all(axis=1)).any()
 
 
 # This schema only validates for the presence of all required variables
@@ -27,7 +32,7 @@ initial_schema = pa.DataFrameSchema(
         "episode_number": pa.Column(EPISODE_DTYPE, EPISODE_RANGE, nullable=True),
     },
     checks=[
-        pa.Check(lambda df: ~(df.isna().all(axis=1)).any(), error="Empty rows found."),
+        pa.Check(check_empty_rows, error="Empty rows found."),
     ],
 )
 
@@ -48,8 +53,7 @@ test_schema = pa.DataFrameSchema(
         "episode_number": pa.Column(EPISODE_DTYPE, EPISODE_RANGE, nullable=False),
     },
     checks=[
-        pa.Check(lambda df: ~(df.isna().all(axis=1)).any(), error="Empty rows found."),
-        pa.Check(lambda df: ~(df.isna().all(axis=1)).any(), error="Empty rows found."),
+        pa.Check(check_empty_rows, error="Empty rows found."),
     ],
 )
 
@@ -64,6 +68,6 @@ prediction_schema = pa.DataFrameSchema(
         "episode_number": pa.Column(EPISODE_DTYPE, EPISODE_RANGE, nullable=False),
     },
     checks=[
-        pa.Check(lambda df: ~(df.isna().all(axis=1)).any(), error="Empty rows found."),
+        pa.Check(check_empty_rows, error="Empty rows found."),
     ],
 )
