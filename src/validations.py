@@ -10,6 +10,11 @@ TARGET_DTYPE = int
 AGE_RANGE = pa.Check.between(0, 130)
 EPISODE_RANGE = pa.Check.between(0, 15)
 
+
+def check_target_ratio(x):
+    return (x.mean() > 0.5) & (x.mean() < 0.95)
+
+
 # This schema only validates for the presence of all required variables
 # and ensures that the possible values in the features make sense
 initial_schema = pa.DataFrameSchema(
@@ -31,13 +36,19 @@ initial_schema = pa.DataFrameSchema(
 test_schema = pa.DataFrameSchema(
     {
         "hospital_outcome": pa.Column(
-            TARGET_DTYPE, pa.Check.isin(TARGET_POSSIBLE_VALUES), nullable=False
+            TARGET_DTYPE,
+            checks=[
+                pa.Check.isin(TARGET_POSSIBLE_VALUES),
+                pa.Check(check_target_ratio),
+            ],
+            nullable=False,
         ),
         "age": pa.Column(AGE_DTYPE, AGE_RANGE, nullable=False),
         "sex": pa.Column(SEX_DTYPE, pa.Check.isin(SEX_POSSIBLE_VALUES), nullable=False),
         "episode_number": pa.Column(EPISODE_DTYPE, EPISODE_RANGE, nullable=False),
     },
     checks=[
+        pa.Check(lambda df: ~(df.isna().all(axis=1)).any(), error="Empty rows found."),
         pa.Check(lambda df: ~(df.isna().all(axis=1)).any(), error="Empty rows found."),
     ],
 )
