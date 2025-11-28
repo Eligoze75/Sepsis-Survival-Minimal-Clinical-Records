@@ -46,6 +46,62 @@ Sepsis-Survival-Minimal-Clinical-Records/
 └── README.md
 ```
 
+## Dependencies
+
+-   [Docker](https://www.docker.com/)
+-   [VS Code](https://code.visualstudio.com/download)
+-   [VS Code Jupyter Extension](https://marketplace.visualstudio.com/items?itemName=ms-toolsai.jupyter)
+
+## Usage
+
+### Setup
+
+> If you are using Mac or Windows, ensure Docker Desktop is running.
+
+1.  Clone this GitHub repository.
+
+### Running the analysis
+
+1.  Using the command line on your computer to go to the project's root directory, then run the following command:
+
+``` bash
+docker compose up
+```
+
+2.  In the terminal output, find a URL which begins with `http://127.0.0.1:8888/lab?token=` Copy that URL and open it in your web browser.
+
+3.  To execute the analysis, open `reports/sepsis-prediction-report.ipynb` in Jupyter Lab then under the "Kernel" menu choose "Restart Kernel and Run All Cells...".
+
+### Clean up
+
+1.  To stop the container and remove associated resources, press `Ctrl` + `C` in the terminal where the container is running, then enter `docker compose rm`
+
+## **Developer notes**
+
+### **Developer dependencies**
+
+-   `conda` (version 25.7.0 or higher)
+
+-   `conda-lock` (version 3.0.4 or higher)
+
+### **Adding a new dependency**
+
+1.  Create a new branch and add the dependency to the `environment.yml` file.
+
+2.  Run the following command to update the `conda-linux-64.lock` file:
+
+    ``` bash
+    `conda-lock -k explicit --file environment.yml -p linux-64`
+    ```
+
+3.  Build the Docker image locally to verify it compiles and operates correctly.
+
+4.  Commit and push the updates to GitHub. A new Docker image tagged with the commit's SHA will automatically be built and pushed to Docker Hub.
+
+5.  Update the `docker-compose.yml` file and ensure the tag of the new container image is generated in your branch.
+
+6.  Submit a pull request to have these updates merged into the `main` branch.
+
 ## Environment Setup
 
 To reproduce the environment, run:
