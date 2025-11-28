@@ -73,7 +73,7 @@ docker compose up
 
 2.  In the terminal output, find a URL which begins with `http://127.0.0.1:8888/lab?token=` Copy that URL and open it in your web browser.
 
-3.  To execute the analysis, open `reports/sepsis-prediction-report.ipynb` in Jupyter Lab then under the "Kernel" menu choose "Restart Kernel and Run All Cells...".
+3.  To execute the analysis, open `src/sepsis-prediction-report.ipynb` in Jupyter Lab then under the "Kernel" menu choose "Restart Kernel and Run All Cells...".
 
 ### Clean up
 
