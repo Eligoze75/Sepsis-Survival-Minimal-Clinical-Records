@@ -81,6 +81,9 @@ docker compose up
 
 ## **Developer notes**
 
+- Docker ensures full reproducibility without needing to manually configure dependencies, so anyone can run the environment consistently across operating systems without
+  dependency conflicts.
+
 ### **Developer dependencies**
 
 -   `conda` (version 25.7.0 or higher)
