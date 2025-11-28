@@ -100,7 +100,7 @@ docker compose up
     `conda-lock -k explicit --file environment.yml -p linux-64`
     ```
 
-3.  Build the Docker image locally to verify it compiles and operates correctly.
+3.  Build the Docker image locally to verify it builds successfully and runs as expected.
 
 4.  Commit and push the updates to GitHub. A new Docker image tagged with the commit's SHA will automatically be built and pushed to Docker Hub.
 
