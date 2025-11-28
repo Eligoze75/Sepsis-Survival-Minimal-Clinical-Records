@@ -38,7 +38,7 @@ Sepsis-Survival-Minimal-Clinical-Records/
 ├── src/
 │   ├── sepsis-predictor-report.ipynb                   # Main analysis notebook
 │   └── utils.py                                        # Helper 
-reports
+reports/
 │   └──sepsis-predictor-report.pdf                      # report
 functions
 ├── models/
