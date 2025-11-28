@@ -37,7 +37,10 @@ Sepsis-Survival-Minimal-Clinical-Records/
 │   └── s41598-020-73558-3_sepsis_survival_validation_cohort.csv
 ├── src/
 │   ├── sepsis-predictor-report.ipynb                   # Main analysis notebook
-│   └── utils.py                                        # Helper functions
+│   └── utils.py                                        # Helper 
+reports
+│   └──sepsis-predictor-report.pdf                      # report
+functions
 ├── models/
 ├── environment.yml                                     # Conda environment
 ├── conda-lock.yml                                      # Locked dependencies
