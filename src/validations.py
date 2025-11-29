@@ -1,4 +1,7 @@
 import pandera.pandas as pa
+import warnings
+import pandas as pd
+import os
 
 
 TARGET_POSSIBLE_VALUES = [0, 1]
@@ -20,6 +23,31 @@ def check_empty_rows(df):
     return ~(df[FEATURES].isna().all(axis=1)).any()
 
 
+# Valid file format check : the file format should be ".csv" only.
+def check_file_format(path):
+    ext = os.path.splitext(path)[1].lower()
+    assert ext == ".csv", f"Invalid file format : '{ext}'. Expected/correct format : .csv"
+    return True
+
+# Missingness threshold check
+def check_missingness(df, threshold=0.10):   # For now, setting threshold = 10% 
+    missing_ratio = df.isna().mean().mean()
+    if missing_ratio > threshold:
+        print(f"High missingness ratio ({missing_ratio:.2%}). Validation failed.")
+        return False
+        
+    return True
+
+# Duplicate rows check — warning only 
+def duplicate_warning(df):
+    dup_count = df.duplicated().sum()
+    if dup_count > 0:
+     print(f"Dataset contains duplicate rows. Not failing validation due to dataset nature.")
+    else:
+        print("No duplicate rows detected.") 
+    return True
+
+
 # This schema only validates for the presence of all required variables
 # and ensures that the possible values in the features make sense
 initial_schema = pa.DataFrameSchema(
@@ -33,6 +61,9 @@ initial_schema = pa.DataFrameSchema(
     },
     checks=[
         pa.Check(check_empty_rows, error="Empty rows found."),
+        pa.Check(lambda df: check_missingness(df), error="Excessive missing values detected."),
+        pa.Check(lambda df: duplicate_warning(df)), 
+
     ],
 )
 
@@ -54,6 +85,9 @@ test_schema = pa.DataFrameSchema(
     },
     checks=[
         pa.Check(check_empty_rows, error="Empty rows found."),
+        pa.Check(lambda df: check_missingness(df), error="Missingness threshold exceeded."),
+        pa.Check(lambda df: duplicate_warning(df)), 
+
     ],
 )
 
@@ -69,5 +103,7 @@ prediction_schema = pa.DataFrameSchema(
     },
     checks=[
         pa.Check(check_empty_rows, error="Empty rows found."),
+        pa.Check(lambda df: check_missingness(df), error="Missingness threshold exceeded."),
+        pa.Check(lambda df: duplicate_warning(df)), 
     ],
 )
