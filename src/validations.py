@@ -39,7 +39,7 @@ def check_missingness(df, threshold=0.10):   # For now, setting threshold = 10%
     return True
 
 # Duplicate rows check — warning only 
-def duplicate_warning(df):
+def duplicate_check(df):
     dup_count = df.duplicated().sum()
     if dup_count > 0:
      print(f"Dataset contains duplicate rows. Not failing validation due to dataset nature.")
@@ -62,7 +62,7 @@ initial_schema = pa.DataFrameSchema(
     checks=[
         pa.Check(check_empty_rows, error="Empty rows found."),
         pa.Check(lambda df: check_missingness(df), error="Excessive missing values detected."),
-        pa.Check(lambda df: duplicate_warning(df)), 
+        pa.Check(lambda df: duplicate_check(df)), 
 
     ],
 )
@@ -86,7 +86,7 @@ test_schema = pa.DataFrameSchema(
     checks=[
         pa.Check(check_empty_rows, error="Empty rows found."),
         pa.Check(lambda df: check_missingness(df), error="Missingness threshold exceeded."),
-        pa.Check(lambda df: duplicate_warning(df)), 
+        pa.Check(lambda df: duplicate_check(df)), 
 
     ],
 )
