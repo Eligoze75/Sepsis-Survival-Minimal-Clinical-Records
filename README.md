@@ -108,47 +108,6 @@ docker compose up
 
 6.  Submit a pull request to have these updates merged into the `main` branch.
 
-## Environment Setup
-
-To reproduce the environment, run:
-
-```bash
-conda env create -f environment.yml
-conda activate sepsis_survival_venv
-```
-
-### Using the Conda Lock File
-
-This repository also includes a conda-lock.yml file generated to ensure full reproducibility across platforms and installations. This file contains exact, fully resolved dependency versions.
-
-To create the environment using the lock file:
-
-Install conda-lock if you do not already have it:
-
-```bash
-pip install conda-lock
-```
-
-or via conda:
-
-```bash
-conda install -c conda-forge conda-lock
-```
-
-Generate the environment from the lock file:
-
-```bash
-conda-lock install --name sepsis_survival_venv conda-lock.yml
-```
-
-This will create (or update) the environment with the exact versions pinned in the lock file.
-
-Activate the environment:
-
-```bash
-conda activate sepsis_survival_venv
-```
-
 ## Contributing
 
 We welcome contributions! Whether you're a data scientist, clinician, or machine learning enthusiast, your input can help improve this project. Please read our [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on how to contribute.
