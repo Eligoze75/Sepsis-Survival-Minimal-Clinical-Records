@@ -1,6 +1,4 @@
 import pandera.pandas as pa
-import warnings
-import pandas as pd
 import os
 
 
