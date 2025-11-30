@@ -37,7 +37,10 @@ Sepsis-Survival-Minimal-Clinical-Records/
 │   └── s41598-020-73558-3_sepsis_survival_validation_cohort.csv
 ├── src/
 │   ├── sepsis-predictor-report.ipynb                   # Main analysis notebook
-│   └── utils.py                                        # Helper functions
+│   └── utils.py                                        # Helper 
+reports/
+│   └──sepsis-predictor-report.pdf                      # report
+functions
 ├── models/
 ├── environment.yml                                     # Conda environment
 ├── conda-lock.yml                                      # Locked dependencies
@@ -70,13 +73,16 @@ docker compose up
 
 2.  In the terminal output, find a URL which begins with `http://127.0.0.1:8888/lab?token=` Copy that URL and open it in your web browser.
 
-3.  To execute the analysis, open `reports/sepsis-prediction-report.ipynb` in Jupyter Lab then under the "Kernel" menu choose "Restart Kernel and Run All Cells...".
+3.  To execute the analysis, open `src/sepsis-prediction-report.ipynb` in Jupyter Lab then under the "Kernel" menu choose "Restart Kernel and Run All Cells...".
 
 ### Clean up
 
 1.  To stop the container and remove associated resources, press `Ctrl` + `C` in the terminal where the container is running, then enter `docker compose rm`
 
 ## **Developer notes**
+
+- Docker ensures full reproducibility without needing to manually configure dependencies, so anyone can run the environment consistently across operating systems without
+  dependency conflicts.
 
 ### **Developer dependencies**
 
@@ -94,54 +100,13 @@ docker compose up
     `conda-lock -k explicit --file environment.yml -p linux-64`
     ```
 
-3.  Build the Docker image locally to verify it compiles and operates correctly.
+3.  Build the Docker image locally to verify it builds successfully and runs as expected.
 
 4.  Commit and push the updates to GitHub. A new Docker image tagged with the commit's SHA will automatically be built and pushed to Docker Hub.
 
 5.  Update the `docker-compose.yml` file and ensure the tag of the new container image is generated in your branch.
 
 6.  Submit a pull request to have these updates merged into the `main` branch.
-
-## Environment Setup
-
-To reproduce the environment, run:
-
-```bash
-conda env create -f environment.yml
-conda activate sepsis_survival_venv
-```
-
-### Using the Conda Lock File
-
-This repository also includes a conda-lock.yml file generated to ensure full reproducibility across platforms and installations. This file contains exact, fully resolved dependency versions.
-
-To create the environment using the lock file:
-
-Install conda-lock if you do not already have it:
-
-```bash
-pip install conda-lock
-```
-
-or via conda:
-
-```bash
-conda install -c conda-forge conda-lock
-```
-
-Generate the environment from the lock file:
-
-```bash
-conda-lock install --name sepsis_survival_venv conda-lock.yml
-```
-
-This will create (or update) the environment with the exact versions pinned in the lock file.
-
-Activate the environment:
-
-```bash
-conda activate sepsis_survival_venv
-```
 
 ## Contributing
 
