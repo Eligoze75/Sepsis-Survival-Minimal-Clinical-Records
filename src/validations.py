@@ -101,7 +101,7 @@ prediction_schema = pa.DataFrameSchema(
     },
     checks=[
         pa.Check(check_empty_rows, error="Empty rows found."),
-        pa.Check(lambda df: check_missingness(df), error="Missingness threshold exceeded."),
-        pa.Check(lambda df: duplicate_check), 
+        pa.Check(check_missingness, error="Missingness threshold exceeded."),
+        pa.Check(duplicate_check), 
     ],
 )
