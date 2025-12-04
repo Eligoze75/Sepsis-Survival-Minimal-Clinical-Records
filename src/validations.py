@@ -29,7 +29,7 @@ def check_file_format(path):
 
 # Missingness threshold check
 def check_missingness(df, threshold=0.10):   # For now, setting threshold = 10% 
-    missing_ratio = df.isna().mean().mean()
+    missing_ratio = df.isna().mean().max()
     if missing_ratio > threshold:
         print(f"High missingness ratio ({missing_ratio:.2%}). Validation failed.")
         return False
@@ -59,8 +59,8 @@ initial_schema = pa.DataFrameSchema(
     },
     checks=[
         pa.Check(check_empty_rows, error="Empty rows found."),
-        pa.Check(lambda df: check_missingness(df), error="Excessive missing values detected."),
-        pa.Check(lambda df: duplicate_check(df)), 
+        pa.Check(check_missingness, error="Excessive missing values detected."),
+        pa.Check(duplicate_check), 
 
     ],
 )
@@ -83,8 +83,8 @@ test_schema = pa.DataFrameSchema(
     },
     checks=[
         pa.Check(check_empty_rows, error="Empty rows found."),
-        pa.Check(lambda df: check_missingness(df), error="Missingness threshold exceeded."),
-        pa.Check(lambda df: duplicate_check(df)), 
+        pa.Check(check_missingness, error="Missingness threshold exceeded."),
+        pa.Check(duplicate_check), 
 
     ],
 )
@@ -101,7 +101,7 @@ prediction_schema = pa.DataFrameSchema(
     },
     checks=[
         pa.Check(check_empty_rows, error="Empty rows found."),
-        pa.Check(lambda df: check_missingness(df), error="Missingness threshold exceeded."),
-        pa.Check(lambda df: duplicate_warning(df)), 
+        pa.Check(check_missingness, error="Missingness threshold exceeded."),
+        pa.Check(duplicate_check), 
     ],
 )
