@@ -1,6 +1,4 @@
 import pandas as pd
-import numpy as np
-from scipy.stats import loguniform, uniform, randint
 import matplotlib.pyplot as plt
 import seaborn as sns
 
