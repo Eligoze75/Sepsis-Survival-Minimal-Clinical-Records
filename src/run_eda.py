@@ -2,7 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-TRAIN_FILENAME = "./data/processed/sepsis_train.csv"
+TRAIN_FILENAME = "./data/s41598-020-73558-3_sepsis_survival_primary_cohort.csv"
 UNIVARIATE_FILENAME = "univariate_visualization"
 MILTIVARIATE_FILENAME = "multivariate_visualization"
 CORR_HEATMAP_FILENAME = "correlation_heatmap"
@@ -16,14 +16,14 @@ def load_train_df(filename):
 
 def compute_descriptive_stats(df):
     print("\n[Descriptive statistics] summary:\n\n")
-    df.describe()
+    print(df.describe())
     print("\n[Descriptive statistics] Counts by category:\n\n")
     print("\nNumber of observations of each Sex\n")
-    df["sex"].value_counts(True, dropna=False)
+    print(df["sex"].value_counts(True, dropna=False))
     print("\nNumber of observations of each Hospital Outcome (target)\n")
-    df["hospital_outcome_cat"].value_counts(True, dropna=False)
+    print(df["hospital_outcome_cat"].value_counts(True, dropna=False))
     print("\n[Descriptive statistics] Missing values ratio per column:\n")
-    df.isna().mean()
+    print(df.isna().mean())
 
 
 def get_univariate_subplots(df, save_filename, extension="png"):
@@ -131,6 +131,7 @@ def get_corr_heatmap(df, use_cols, save_filename, extension="png"):
         linecolor="black",
     )
     plt.title("Correlation Heatmap of Sepsis Numerical Features")
+    plt.tight_layout()
     plt.savefig(
         f"img/{save_filename}.{extension}",
         dpi=300,
