@@ -160,21 +160,21 @@ def get_corr_heatmap(df, use_cols, save_filename, extension, show):
     default=DEFAULT_EXTENTION,
     show_default=True,
     type=str,
-    help="Threshold for processing step.",
+    help="File format/extension of the output image (e.g., png, jpg, pdf).",
 )
 @click.option(
     "--use_corr_cols",
     default=CORR_COLS,
     show_default=True,
     type=list,
-    help="Threshold for processing step.",
+    help="List of column names to include in the correlation analysis.",
 )
 @click.option(
     "--show_visualizations",
     default=DEFAULT_SHOW,
     show_default=True,
     type=bool,
-    help="Threshold for processing step.",
+    help="Show the generated plots. If false, plots are saved but not displayed.",
 )
 def main(filename, file_extention, use_corr_cols, show_visualizations):
     print(" " * 35, "EXPLORATORY DATA ANALYSIS\n\n")
