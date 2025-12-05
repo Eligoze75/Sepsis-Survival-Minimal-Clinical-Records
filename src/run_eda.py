@@ -1,11 +1,14 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+import click
 
 TRAIN_FILENAME = "./data/s41598-020-73558-3_sepsis_survival_primary_cohort.csv"
 UNIVARIATE_FILENAME = "univariate_visualization"
 MILTIVARIATE_FILENAME = "multivariate_visualization"
 CORR_HEATMAP_FILENAME = "correlation_heatmap"
+DEFAULT_EXTENTION = "png"
+DEFAULT_SHOW = True
 CORR_COLS = ["age", "sex", "episode_number", "hospital_outcome"]
 
 
@@ -26,7 +29,7 @@ def compute_descriptive_stats(df):
     print(df.isna().mean())
 
 
-def get_univariate_subplots(df, save_filename, extension="png"):
+def get_univariate_subplots(df, save_filename, extension, show):
     fig, axes = plt.subplots(1, 3, figsize=(25, 7))
 
     # Histogram of Age grouped by target
@@ -60,10 +63,11 @@ def get_univariate_subplots(df, save_filename, extension="png"):
         bbox_inches="tight",
         transparent=True,
     )
-    plt.show()
+    if show:
+        plt.show()
 
 
-def get_multivariate_subplots(df, save_filename, extension="png"):
+def get_multivariate_subplots(df, save_filename, extension, show):
     fig, axes = plt.subplots(1, 3, figsize=(25, 7))
 
     # Boxplot of Age by Hospital Outcome
@@ -110,10 +114,11 @@ def get_multivariate_subplots(df, save_filename, extension="png"):
         bbox_inches="tight",
         transparent=True,
     )
-    plt.show()
+    if show:
+        plt.show()
 
 
-def get_corr_heatmap(df, use_cols, save_filename, extension="png"):
+def get_corr_heatmap(df, use_cols, save_filename, extension, show):
     # Convert categories to 0/1
     df["sex"] = df["sex"].astype("category").cat.codes
     correlation_matrix = df[use_cols].corr()
@@ -138,16 +143,60 @@ def get_corr_heatmap(df, use_cols, save_filename, extension="png"):
         bbox_inches="tight",
         transparent=True,
     )
-    plt.show()
+    if show:
+        plt.show()
+
+
+@click.command()
+@click.option(
+    "--filename",
+    default=TRAIN_FILENAME,
+    show_default=True,
+    type=str,
+    help="Path to the input file.",
+)
+@click.option(
+    "--file_extention",
+    default=DEFAULT_EXTENTION,
+    show_default=True,
+    type=str,
+    help="Threshold for processing step.",
+)
+@click.option(
+    "--use_corr_cols",
+    default=CORR_COLS,
+    show_default=True,
+    type=list,
+    help="Threshold for processing step.",
+)
+@click.option(
+    "--show_visualizations",
+    default=DEFAULT_SHOW,
+    show_default=True,
+    type=bool,
+    help="Threshold for processing step.",
+)
+def main(filename, file_extention, use_corr_cols, show_visualizations):
+    print(" " * 35, "EXPLORATORY DATA ANALYSIS\n\n")
+    df = load_train_df(filename)
+    compute_descriptive_stats(df)
+    print("\n[Univariate and Bivariate visualizations]\n")
+    get_univariate_subplots(
+        df, UNIVARIATE_FILENAME, extension=file_extention, show=show_visualizations
+    )
+    print("\n[Univariate and Bivariate visualizations]\n")
+    get_multivariate_subplots(
+        df, MILTIVARIATE_FILENAME, extension=file_extention, show=show_visualizations
+    )
+    print("\n[Correlation Heatmap]\n\n")
+    get_corr_heatmap(
+        df,
+        use_corr_cols,
+        CORR_HEATMAP_FILENAME,
+        extension=file_extention,
+        show=show_visualizations,
+    )
 
 
 if __name__ == "__main__":
-    print(" " * 35, "EXPLORATORY DATA ANALYSIS\n\n")
-    df = load_train_df(TRAIN_FILENAME)
-    compute_descriptive_stats(df)
-    print("\n[Univariate and Bivariate visualizations]\n")
-    get_univariate_subplots(df, UNIVARIATE_FILENAME, extension="png")
-    print("\n[Univariate and Bivariate visualizations]\n")
-    get_multivariate_subplots(df, MILTIVARIATE_FILENAME, extension="png")
-    print("\n[Correlation Heatmap]\n\n")
-    get_corr_heatmap(df, CORR_COLS, CORR_HEATMAP_FILENAME, extension="png")
+    main()
