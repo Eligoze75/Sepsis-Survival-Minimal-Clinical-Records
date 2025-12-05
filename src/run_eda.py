@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import click
 
-TRAIN_FILENAME = "./data/s41598-020-73558-3_sepsis_survival_primary_cohort.csv"
+TRAIN_FILENAME = "./data/processed/sepsis_train.csv"
 UNIVARIATE_FILENAME = "univariate_visualization"
 MILTIVARIATE_FILENAME = "multivariate_visualization"
 CORR_HEATMAP_FILENAME = "correlation_heatmap"
