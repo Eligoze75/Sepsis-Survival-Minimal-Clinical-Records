@@ -13,11 +13,37 @@ CORR_COLS = ["age", "sex", "episode_number", "hospital_outcome"]
 
 
 def load_train_df(filename):
+    """Load a training dataset from a CSV file.
+
+    This function reads the specified CSV file
+    into a pandas DataFrame.
+
+    Args:
+        filename (str): Path to the CSV file to load.
+
+    Returns:
+        pandas.DataFrame: The loaded dataset.
+
+    Raises:
+        FileNotFoundError: If the specified file does not exist.
+    """
     print(f"\n[Loading Data] {filename}...\n")
     return pd.read_csv(filename)
 
 
 def compute_descriptive_stats(df):
+    """Compute and display descriptive statistics for the dataset.
+
+    This function prints summary statistics for numerical columns, category counts
+    for categorical features, and the proportion of missing values for each
+    column.
+
+    Args:
+        df (pandas.DataFrame): The input DataFrame containing the dataset to analyze.
+
+    Returns:
+        None: This function prints results but does not return any value.
+    """
     print("\n[Descriptive statistics] summary:\n\n")
     print(df.describe())
     print("\n[Descriptive statistics] Counts by category:\n\n")
@@ -30,6 +56,29 @@ def compute_descriptive_stats(df):
 
 
 def get_univariate_subplots(df, save_filename, extension, show):
+    """Generate and save a set of univariate visualizations.
+
+    This function creates a figure with three subplots to summarize key
+    univariate and bivariate relationships in the dataset:
+
+    1. A histogram of age, grouped by the target variable.
+    2. A bar plot showing the distribution of episode counts.
+    3. A heatmap showing the cross-tabulation of sex and hospital outcome.
+
+    The resulting figure is saved to the img/ folder and optionally displayed.
+
+    Args:
+        df (pandas.DataFrame): The input DataFrame containing the data to plot.
+        save_filename (str): Base filename (without extension) for saving the figure.
+        extension (str): File extension specifying the output image format
+            (e.g., "png", "pdf", "svg").
+        show (bool): If True, the generated plot is displayed.
+            If False, the plot is only saved to disk.
+
+    Returns:
+        None: The function saves and optionally displays the figure but
+        does not return any value.
+    """
     fig, axes = plt.subplots(1, 3, figsize=(25, 7))
 
     # Histogram of Age grouped by target
@@ -68,6 +117,30 @@ def get_univariate_subplots(df, save_filename, extension, show):
 
 
 def get_multivariate_subplots(df, save_filename, extension, show):
+    """Generate and save multivariate visualizations.
+
+    This function creates a figure with three boxplots to examine how the
+    distribution of age varies across different categorical variables:
+
+    1. Age by hospital outcome.
+    2. Age by episode number, grouped by hospital outcome.
+    3. Age by sex, grouped by hospital outcome.
+
+    The figure is saved to disk and optionally displayed.
+
+    Args:
+        df (pandas.DataFrame): The input DataFrame containing the data to visualize.
+        save_filename (str): Base filename (without extension) under which the figure
+            will be saved.
+        extension (str): File extension for the output image (e.g., ``"png"``,
+            ``"pdf"``).
+        show (bool): If True, displays the generated plots. If False,
+            only saves the figure to the ``img/`` directory.
+
+    Returns:
+        None: The function saves and optionally displays the figure but does not
+        return any value.
+    """
     fig, axes = plt.subplots(1, 3, figsize=(25, 7))
 
     # Boxplot of Age by Hospital Outcome
@@ -119,6 +192,27 @@ def get_multivariate_subplots(df, save_filename, extension, show):
 
 
 def get_corr_heatmap(df, use_cols, save_filename, extension, show):
+    """Generate and save a correlation heatmap for selected columns.
+
+    This function computes a correlation matrix using only the columns
+    specified in ``use_cols``. It then generates a heatmap visualization
+    of the correlations, saves the resulting figure, and optionally displays it.
+
+    Args:
+        df (pandas.DataFrame): The input DataFrame containing the data.
+        use_cols (list[str]): List of column names for which the correlation
+            matrix will be computed and visualized.
+        save_filename (str): Base filename (without extension) under which the
+            heatmap image will be saved.
+        extension (str): File extension for the saved image
+            (e.g., ``"png"``, ``"pdf"``, ``"svg"``).
+        show (bool): If True, displays all visualization plots. If False,
+            the plots will only be saved to the ``img/`` directory.
+
+    Returns:
+        None: The function saves and optionally displays the correlation heatmap,
+        but does not return any value.
+    """
     # Convert categories to 0/1
     df["sex"] = df["sex"].astype("category").cat.codes
     correlation_matrix = df[use_cols].corr()
@@ -177,6 +271,30 @@ def get_corr_heatmap(df, use_cols, save_filename, extension, show):
     help="Show the generated plots. If false, plots are saved but not displayed.",
 )
 def main(filename, file_extention, use_corr_cols, show_visualizations):
+    """Runs the EDA steps.
+
+    This function runs all steps of the EDA:
+
+    1. Loads data.
+    2. Computes Univariate and Bivariate visualizations.
+    3. Computes Multivariate visualizations.
+    4. Computes correlation matrix.
+
+    Args:
+        filename (str): The input DataFrame containing the data.
+        file_extention (str): File extension for the saved image
+            (e.g., ``"png"``, ``"pdf"``, ``"svg"``).
+        use_corr_cols (str): Base filename (without extension) under which the
+            heatmap image will be saved.
+        extension (str): File extension for the saved image
+            (e.g., ``"png"``, ``"pdf"``, ``"svg"``).
+        show (bool): If True, displays the plot. If False,
+            the plot is only saved to the ``img/`` directory.
+
+    Returns:
+        None: The function saves and optionally displays the generated visualizations,
+        but does not return any value.
+    """
     print(" " * 35, "EXPLORATORY DATA ANALYSIS\n\n")
     df = load_train_df(filename)
     compute_descriptive_stats(df)
