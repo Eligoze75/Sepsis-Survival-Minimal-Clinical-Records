@@ -3,6 +3,7 @@
 import click
 import pickle
 import pandas as pd
+from scipy.stats import loguniform, uniform, randint
 from sklearn.compose import make_column_transformer
 from sklearn.pipeline import make_pipeline
 from sklearn.linear_model import LogisticRegression
@@ -25,10 +26,9 @@ from sklearn.model_selection import (
 @click.command()
 @click.option("--train-df", type=str, required=True, help="Path to cleaned TRAIN CSV")
 @click.option("--test-df", type=str, required=True, help="Path to cleaned TEST CSV")
-@click.option('--table-to', type=str, help="Path to directory where the table will be written to")
-@click.option('--model-to', type=str, help="Path to directory where the model object will be written to")
+@click.option('--output-table', type=str, help="Path to directory where the table will be written to")
 
-def main(train_df, test_df, model_to, table_to):
+def main(train_df, test_df, output_table):
     '''Reads and splits the cleaned data, fits a sepsis prediction model, and outputs a table summarizing the classification metrics.'''
 
     RANDOM_STATE = 15
@@ -83,8 +83,8 @@ def main(train_df, test_df, model_to, table_to):
     lr_random_search.fit(X_train, y_train)
     lr_best_model = lr_random_search.best_estimator_   
 
-    with open("lr_fit.pickle", 'wb') as f:
-    pickle.dump(lr_fit, f)
+    with open("lr_best_model.pickle", 'wb') as f:
+        pickle.dump(lr_best_model, f)
     
     # Classification Metrics(adapted from DSCI 573 lecture 1)
     y_pred_train = lr_best_model.predict(X_train)
@@ -109,7 +109,17 @@ def main(train_df, test_df, model_to, table_to):
     )
        
     with open("classification_metrics.pickle", 'wb') as f:
-    pickle.dump(classification_metrics, f)
+        pickle.dump(classification_metrics, f)
+
+    # Outputs classification metrics table
+    try:
+        classification_metrics.to_csv(output_table, index=False)
+        
+    except Exception as e:
+        print("Error saving output files:", e)
+        sys.exit(1)
+
+    print(f"Saved classification metrics to: {output_table}")
 
 if __name__ == "__main__":
     main()
