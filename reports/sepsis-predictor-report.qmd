@@ -84,5 +84,36 @@ As seen in @fig-multivariate, age varies across outcome and episode groups.
     - *Sex* is a binary categorical variable with no order of magnitude and should be one-hot encoded, no missing values.
     - *Episode number* is a numeric variable and should be standardized, no missing values.
 
+```{python}
+#| label: tbl-metrics
+#| tbl-cap: "Logistic Regression performance on train/test sets."
+metrics
+```
+
+By looking at the classification metrics above we can directly see that the model achieved a 
+train ROC AUC of `{python} round(float(metrics['roc_auc'][0]),3)` and a test ROC AUC of `{python} round(float(metrics['roc_auc'][1]),3)`. 
+This is likely due to the very limited number of features available to train the model, 
+which limits its ability to generalize well to unseen data and the data imbalance between target groups.
+
+
+As seen in @fig-univariate, the predicted probability distributions for Survived and Died overlap almost completely.  
+This explains the weak ROC AUC: the model struggles to rank classes effectively given the limited features available.  
+@tbl-metrics confirms that recall and precision are inflated due to class imbalance, and the model overfits by performing much better on training data than test data.
+
+## Model Interpretation (Methods)
+### Logistic Regression Coefficients
+
+```{python}
+#| echo: false
+import pandas as pd
+
+coef = pd.read_csv("../data/logistic_coefficients.csv")
+
+intercept = coef.loc[coef.feature=="intercept","coef"].item()
+age_coef = coef.loc[coef.feature=="age_in_years","coef"].item()
+episode_coef = coef.loc[coef.feature=="episode_number","coef"].item()
+sex_coef = coef.loc[coef.feature=="sex","coef"].item()
+```
+
 
 
