@@ -5,7 +5,7 @@ import click
 
 TRAIN_FILENAME = "./data/processed/sepsis_train.csv"
 UNIVARIATE_FILENAME = "univariate_visualization"
-MILTIVARIATE_FILENAME = "multivariate_visualization"
+MULTIVARIATE_FILENAME = "multivariate_visualization"
 CORR_HEATMAP_FILENAME = "correlation_heatmap"
 DEFAULT_EXTENTION = "png"
 DEFAULT_SHOW = True
@@ -214,8 +214,9 @@ def get_corr_heatmap(df, use_cols, save_filename, extension, show):
         but does not return any value.
     """
     # Convert categories to 0/1
-    df["sex"] = df["sex"].astype("category").cat.codes
-    correlation_matrix = df[use_cols].corr()
+    df_ = df.copy()
+    df_["sex"] = df_["sex"].astype("category").cat.codes
+    correlation_matrix = df_[use_cols].corr()
 
     plt.figure(figsize=(5, 4))
     sns.heatmap(
@@ -304,7 +305,7 @@ def main(filename, file_extention, use_corr_cols, show_visualizations):
     )
     print("\n[Univariate and Bivariate visualizations]\n")
     get_multivariate_subplots(
-        df, MILTIVARIATE_FILENAME, extension=file_extention, show=show_visualizations
+        df, MULTIVARIATE_FILENAME, extension=file_extention, show=show_visualizations
     )
     print("\n[Correlation Heatmap]\n\n")
     get_corr_heatmap(
