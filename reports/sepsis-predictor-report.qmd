@@ -163,6 +163,15 @@ All of these results match the previous correlation analysis, and the coefficien
 
 Overall, the SHAP analysis shows that age is the dominant predictor used by the model, and that there's a negative association between age and survival probability. Sex has minimal influence, but it suggests also that males have a slightly smaller chance to survive to a Sepsis episode.
 
+## Results & Discussion
+
+The results of the analysis indicate that age is the dominant factor influencing survival in sepsis patients. Both the correlation analysis and SHAP explainability results show that older patients have a significantly lower probability of survival, with age having a mean SHAP importance value nearly ten times higher than any other feature. In contrast, sex and episode number contribute minimally, suggesting that demographic features alone cannot capture the full complexity of sepsis mortality risk.
+
+The model achieved a test ROC AUC of **`{python} f"{metrics['roc_auc'][1]:.3f}"`**, indicating limited discriminative ability.  
+Despite a high recall of `{python} f"{metrics['recall'][1]:.3f}"` and a precision of `{python} f"{metrics['precision'][1]:.3f}"` on the test set,
+these inflated values are largely driven by the strong class imbalance (approximately 93% survivors vs 7% non-survivors).
+
+## References
 
 
 
