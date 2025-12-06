@@ -5,7 +5,8 @@ import sys
 import os
 
 DEFAULT_FILENAME = "s41598-020-73558-3_sepsis_survival_primary_cohort.csv"
-DEFAULT_OUTPUTNAME = os.path.join(os.pardir(__file__), "data")
+PAR_PATH = os.path.dirname(os.path.dirname(__file__))
+DEFAULT_OUTPUT = os.path.join(PAR_PATH, "data/raw")
 
 
 @click.command()
@@ -13,14 +14,16 @@ DEFAULT_OUTPUTNAME = os.path.join(os.pardir(__file__), "data")
     "--filename",
     "-n",
     default=DEFAULT_FILENAME,
-    required=True,
+    required=False,
+    show_default=True,
     help="Name of CSV file INSIDE the UCI ZIP archive to load",
 )
 @click.option(
     "--output",
     "-o",
-    default=DEFAULT_OUTPUTNAME,
-    required=True,
+    default=DEFAULT_OUTPUT,
+    required=False,
+    show_default=True,
     help="Path to directory where raw data will be written to",
 )
 def download_data(filename, output):
@@ -58,8 +61,9 @@ def download_data(filename, output):
         if output_dir:
             os.makedirs(output_dir, exist_ok=True)
 
-        df.to_csv(output, index=False)
-        click.echo(f"Saved dataset to: {output}")
+        save_filename = os.path.join(output, filename)
+        df.to_csv(save_filename, index=False)
+        click.echo(f"Saved dataset to: {save_filename}")
     except Exception as e:
         click.echo(f"Failed to save file to {output}")
         click.echo(str(e))
