@@ -43,3 +43,46 @@ Since sepsis requires urgent medical care, a machine learning algorithm that can
 
 To answer this question and produce a machine learning model, the datasets of 110,204 admissions of 84,811 hospitalized subjects between 2011 and 2012 in Norway who were diagnosed with infections, systemic inflammatory response syndrome, sepsis by causative microbes, or septic shock will be utilized to analyze and build a machine learning algorithm. It was sourced from the UCI Machine Learning Repository [@chicco2020sepsisdataset]. Each row in the data set represents each patient information including their age, sex, and number of prior sepsis episodes. There is an outcome of each patient whether they survive at a time of about 9 days after being hospitalized in each row. All the patients' admissions are only defined by the novel Sepsis-3 definition.
 
+
+
+## Exploratory Data Analysis (EDA)
+
+EDA is conducted first to see if any data wrangling is needed before proceeding to building a machine learning model.
+
+From the current train and test datasets, all the data are already clean. Age ranges from 0–100 years, Sex is encoded as male/female, and Episode Number varies between 1–5 with no missing values, so no imputation is required.
+
+![](../img/univariate_visualization.png){#fig-univariate width=105%}
+
+@fig-univariate presents three univariate visualizations that provide an initial understanding of feature distributions and how they relate to survival outcome:
+
+- **Age distribution:** The left histogram shows age is widely spread between 0–100 years, with a clear right-skew toward older patients. Both survival and death outcomes overlap heavily across ages, but deaths appear slightly more common in the upper age range.
+- **Episode count distribution:** The middle bar chart reveals that most patients experience only a single prior sepsis episode, with rapidly decreasing frequency as episode count increases.
+- **Sex vs Outcome counts:** The heatmap on the right displays the cross-tabulation of sex and survival outcome. Both males and females predominantly fall under the *survived* category, with similar proportions, indicating sex alone is not a strong differentiator for survival.
+
+
+![](../img/multivariate_visualization.png){#fig-multivariate width=95%}
+
+@fig-multivariate presents multivariate distributions using boxplots, showing how age varies with episode count and patient sex across outcome groups.
+
+![](../img/correlation_heatmap.png){#fig-corr width=70%}
+
+@fig-corr displays the correlation heatmap, confirming that age is the most strongly related feature to survival outcome, while sex and episode count show weaker associations.
+
+
+### EDA key findings
+@fig-univariate illustrates the age distribution and outcome imbalance.
+
+As seen in @fig-multivariate, age varies across outcome and episode groups.
+
+@fig-corr confirms age as the strongest predictor for survival.
+
+- **Highly imbalanced target**: The dataset contains a majority of Sepsis survivors (93%). This suggests the use of specific metrics (e.g., recall, precision, aucpr) and resampling techniques to address class imbalance.
+- **Weak predictors**: Correlation analysis and visualizations showed that there are no strong associations between any of the features and the target. This suggests that these features might have limited predictive power and the model may not be able to generalize well with such features
+- **No Multicolinearity**: No high correlation between features, so no risk of multicolinearity.
+- **What preprocessing needs to be applied**:
+    - *Age* is a numeric variable and should be standardized, no missing values.
+    - *Sex* is a binary categorical variable with no order of magnitude and should be one-hot encoded, no missing values.
+    - *Episode number* is a numeric variable and should be standardized, no missing values.
+
+
+
