@@ -115,5 +115,28 @@ episode_coef = coef.loc[coef.feature=="episode_number","coef"].item()
 sex_coef = coef.loc[coef.feature=="sex","coef"].item()
 ```
 
+```{python}
+#| echo: false
+eq_str = (
+    f"logit(p) = {intercept:.3f} "
+    f"{age_coef:+.3f}·Age "
+    f"{episode_coef:+.3f}·Episode Number "
+    f"{sex_coef:+.3f}·Is Male"
+)
+```
+
+The final logistic model learned the relationship between features and survival:
+
+`{python} eq_str`
+
+Even though the model underperforms, we can still interpret the learned coefficients:
+
+- The intercept is **`{python} f"{intercept:.3f}"`**, representing baseline survival log-odds when all predictors equal zero.
+- **Age has the strongest negative effect (`{python} f"{age_coef:.3f}"`)**, meaning survival probability decreases as age increases.
+- **Episode number has a small coefficient (`{python} f"{episode_coef:.3f}"`)**, suggesting only minor influence on survival.
+- **Being male has a coefficient of (`{python} f"{sex_coef:.3f}"`)**, indicating slightly lower survival odds than females.
+
+
+
 
 
