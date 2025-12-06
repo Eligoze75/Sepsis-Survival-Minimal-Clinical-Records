@@ -137,6 +137,32 @@ Even though the model underperforms, we can still interpret the learned coeffici
 - **Being male has a coefficient of (`{python} f"{sex_coef:.3f}"`)**, indicating slightly lower survival odds than females.
 
 
+#### SHAP Explanation and Feature Importance
+
+[**SHAP** *(SHapley Additive exPlanations)*] [@lundberg2025shap] is a method used to explain how individual features contribute to a machine learning model’s predictions. It assigns a numerical value to each feature that represents how much that feature pushes the prediction up or down. A higher SHAP value indicates a higher level of importance, meaning the feature has a stronger influence on the model's decision. SHAP is particularly useful for understanding both global feature importance and how a single observation is being predicted. In this analysis, SHAP values are used to determine which features are most important in the logistic regression model predicting sepsis hospital survival.
+
+To interpret the logistic regression model, SHAP values were computed to measure the contribution of each feature to the model’s output. The model includes three predictors: age_in_years, sex, and episode_number. The SHAP values represent the average magnitude by which each feature affects the prediction across all test samples.
+
+```{python}
+#| echo: false
+import pandas as pd
+
+shap_importance = pd.read_csv("../data/shap_importance.csv")
+shap_importance_sorted = shap_importance.sort_values("mean_abs_shap", ascending=False)
+top1 = shap_importance_sorted.iloc[0]
+top2 = shap_importance_sorted.iloc[1]
+bottom = shap_importance_sorted.iloc[-1]
+```
+
+The SHAP results confirm that **`{python} top1['feature']`** is the most influential feature, with a mean SHAP value of **`{python} f"{top1['mean_abs_shap']:.5f}"`**, indicating that it has 
+the strongest impact on survival predictions. The next most important feature is **`{python} top2['feature']`**, with a mean SHAP value of **`{python} f"{top2['mean_abs_shap']:.5f}"`**, 
+although substantially weaker than **`{python} top1['feature']`**. 
+Finally, **`{python} bottom['feature']`** shows the lowest SHAP contribution, at **`{python} f"{bottom['mean_abs_shap']:.5f}"`**, suggesting minimal influence on the model output.
+
+All of these results match the previous correlation analysis, and the coefficients from the logistic regression.
+
+Overall, the SHAP analysis shows that age is the dominant predictor used by the model, and that there's a negative association between age and survival probability. Sex has minimal influence, but it suggests also that males have a slightly smaller chance to survive to a Sepsis episode.
+
 
 
 
