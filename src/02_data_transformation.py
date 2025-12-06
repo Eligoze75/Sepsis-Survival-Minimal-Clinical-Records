@@ -1,6 +1,7 @@
 import click
 import pandas as pd
 import sys
+import os
 
 
 @click.command()
@@ -42,16 +43,33 @@ def clean_data(input_train, input_test, output_train, output_test):
     print("\nMissing values (test):")
     print(test_df.isna().mean())
 
+    # Save summary statistics for training data
+    train_summary = train_df.describe()
+    
+    summary_path = "results/tables/train_summary.csv"
+    summary_dir = os.path.dirname(summary_path)
+    if summary_dir:
+        os.makedirs(summary_dir, exist_ok=True)
+    
+    train_summary.to_csv(summary_path)
+    print(f"Saved training summary statistics to: {summary_path}")
+
     # Save outputs
     try:
+        train_dir = os.path.dirname(output_train)
+        test_dir = os.path.dirname(output_test)
+    
+    # To ensure the output paths exist
+        if train_dir:
+            os.makedirs(train_dir, exist_ok=True)
+        if test_dir:
+            os.makedirs(test_dir, exist_ok=True)
+    
         train_df.to_csv(output_train, index=False)
         test_df.to_csv(output_test, index=False)
     except Exception as e:
         print("Error saving output files:", e)
         sys.exit(1)
-
-    print(f"Saved cleaned train data to: {output_train}")
-    print(f"Saved cleaned test data to: {output_test}")
 
 
 if __name__ == "__main__":

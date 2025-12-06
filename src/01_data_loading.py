@@ -45,9 +45,14 @@ def download_data(filename, output):
         click.echo("File format validation failed.")
         click.echo(str(e))
         sys.exit("Stopping execution due to invalid file format.")
-
+    
     # Save output
     try:
+        output_dir = os.path.dirname(output)
+        # To ensure the output path exists
+        if output_dir:
+            os.makedirs(output_dir, exist_ok=True)
+    
         df.to_csv(output, index=False)
         click.echo(f"Saved dataset to: {output}")
     except Exception as e:
