@@ -26,23 +26,57 @@ This project includes the following components:
 
 ``` bash
 Sepsis-Survival-Minimal-Clinical-Records/
-├── data/
-│   ├── processed/
-│   ├── s41598-020-73558-3_sepsis_survival_primary_cohort.csv
-│   ├── s41598-020-73558-3_sepsis_survival_study_cohort.csv
-│   └── s41598-020-73558-3_sepsis_survival_validation_cohort.csv
-├── src/
-│   ├── sepsis-predictor-report.ipynb                   # Main analysis notebook
-│   └── utils.py                                        # Helper 
-reports/
-│   └──sepsis-predictor-report.pdf                      # report
-functions
-├── models/
+├── data
+│   ├── processed
+│   │   ├── sepsis_test.csv
+│   │   ├── sepsis_train.csv
+│   │   ├── test_clean.csv
+│   │   └── train_clean.csv
+│   └── raw
+│       ├── s41598-020-73558-3_sepsis_survival_primary_cohort.csv
+│       └── s41598-020-73558-3_sepsis_survival_study_cohort.csv
+├── reports
+│   ├── references.bib
+│   ├── sepsis-predictor-report.html
+│   ├── sepsis-predictor-report.pdf
+│   └── sepsis-predictor-report.qmd
+├── results
+│   ├── figures
+│   │   ├── correlation_heatmap.png
+│   │   ├── multivariate_visualization.png
+│   │   ├── score_by_target_class.png
+│   │   ├── shap_values_plot.png
+│   │   └── univariate_visualization.png
+│   ├── models
+│   │   ├── logistic_reg.pkl
+│   │   ├── lr.pkl
+│   │   └── random_forest.pkl
+│   └── tables
+│       ├── classification_metrics.csv
+│       ├── missing_vals_ratio.csv
+│       ├── model_coefficients.csv
+│       ├── sex_valcounts.csv
+│       ├── target_valcounts.csv
+│       └── train_summary.csv
+└── src
+│   ├── 01_data_loading.py
+│   ├── 02_data_transformation.py
+│   ├── 03_run_eda.py
+│   ├── 04_modeling_and_evaluation.py
+│   ├── sepsis-predictor-report.ipynb.                  # Main analysis notebook
+│   ├── utils.py                                        
+│   └── validations.py
+│
+├── docker-compose.yml                                             
 ├── environment.yml                                     # Conda environment
-├── conda-lock.yml                                      # Locked dependencies
+├── conda-linux-64.lock                                 # Locked dependencies
 ├── CONTRIBUTING.md                                     # Contribution guidelines
-├── LICENSE
+├── CODE_OF_CONDUCT.md
+├── Dockerfile
+├── LICENSE               
 └── README.md
+                                  
+
 ```
 
 ## Dependencies
@@ -99,8 +133,8 @@ docker compose up
     5.  Create analysis report - Generate HTML and PDF reports
 
         ``` bash
-        quarto render reports/sepsis_predictor_report.qmd --to html
-        quarto render reports/sepsis_predictor_report.qmd --to pdf
+        quarto render reports/sepsis-predictor-report.qmd --to html
+        quarto render reports/sepsis-predictor-report.qmd --to pdf
         ```
 
 ### Clean up
