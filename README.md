@@ -8,11 +8,7 @@ Sepsis is a life-threatening condition where the body's immune system overreacts
 
 This project explores whether basic patient information Age, Sex, and number of prior Sepsis episodes can predict survival outcomes. We analyzed [a dataset](https://archive.ics.uci.edu/dataset/827/sepsis+survival+minimal+clinical+records) of over 110,000 hospital admissions from Norway (2011-2012) using a Logistic Regression model.
 
-**Key Findings:**
-- Age emerged as the strongest predictor: older patients have lower survival probability (SHAP value: 0.86)
-- The model achieved a ROC AUC of 0.59, showing limited predictive power
-- Sex and Episode Number had minimal impact on predictions
-- The dataset is highly imbalanced: 93% survivors vs. 7% non survivors
+**Key Findings:** - Age emerged as the strongest predictor: older patients have lower survival probability (SHAP value: 0.86) - The model achieved a ROC AUC of 0.59, showing limited predictive power - Sex and Episode Number had minimal impact on predictions - The dataset is highly imbalanced: 93% survivors vs. 7% non survivors
 
 **Conclusion:** While Age is an important mortality risk indicator, these basic demographic factors alone are not sufficient for accurate predictions. Additional clinical features (vital signs, lab values, pre existing conditions) would be needed to improve the model's performance.
 
@@ -20,33 +16,67 @@ This project explores whether basic patient information Age, Sex, and number of 
 
 This project includes the following components:
 
-1. Exploratory Data Analysis (EDA)
-2. Data preprocessing and preparation
-3. Training classification models to predict patient survival
-4. Model evaluation and explainability
-5. Final conclusions and discussion
+1.  Exploratory Data Analysis (EDA)
+2.  Data preprocessing and preparation
+3.  Training classification models to predict patient survival
+4.  Model evaluation and explainability
+5.  Final conclusions and discussion
 
 ## Repository Structure
 
-```bash
+``` bash
 Sepsis-Survival-Minimal-Clinical-Records/
-├── data/
-│   ├── processed/
-│   ├── s41598-020-73558-3_sepsis_survival_primary_cohort.csv
-│   ├── s41598-020-73558-3_sepsis_survival_study_cohort.csv
-│   └── s41598-020-73558-3_sepsis_survival_validation_cohort.csv
-├── src/
-│   ├── sepsis-predictor-report.ipynb                   # Main analysis notebook
-│   └── utils.py                                        # Helper 
-reports/
-│   └──sepsis-predictor-report.pdf                      # report
-functions
-├── models/
+├── data
+│   ├── processed
+│   │   ├── sepsis_test.csv
+│   │   ├── sepsis_train.csv
+│   │   ├── test_clean.csv
+│   │   └── train_clean.csv
+│   └── raw
+│       ├── s41598-020-73558-3_sepsis_survival_primary_cohort.csv
+│       └── s41598-020-73558-3_sepsis_survival_study_cohort.csv
+├── reports
+│   ├── references.bib
+│   ├── sepsis-predictor-report.html
+│   ├── sepsis-predictor-report.pdf
+│   └── sepsis-predictor-report.qmd
+├── results
+│   ├── figures
+│   │   ├── correlation_heatmap.png
+│   │   ├── multivariate_visualization.png
+│   │   ├── score_by_target_class.png
+│   │   ├── shap_values_plot.png
+│   │   └── univariate_visualization.png
+│   ├── models
+│   │   ├── logistic_reg.pkl
+│   │   ├── lr.pkl
+│   │   └── random_forest.pkl
+│   └── tables
+│       ├── classification_metrics.csv
+│       ├── missing_vals_ratio.csv
+│       ├── model_coefficients.csv
+│       ├── sex_valcounts.csv
+│       ├── target_valcounts.csv
+│       └── train_summary.csv
+└── src
+│   ├── 01_data_loading.py
+│   ├── 02_data_transformation.py
+│   ├── 03_run_eda.py
+│   ├── 04_modeling_and_evaluation.py
+│   ├── sepsis-predictor-report.ipynb.                  # Main analysis notebook
+│   ├── utils.py                                        
+│   └── validations.py
+│
+├── docker-compose.yml                                             
 ├── environment.yml                                     # Conda environment
-├── conda-lock.yml                                      # Locked dependencies
+├── conda-linux-64.lock                                 # Locked dependencies
 ├── CONTRIBUTING.md                                     # Contribution guidelines
-├── LICENSE
+├── CODE_OF_CONDUCT.md
+├── Dockerfile
+├── LICENSE               
 └── README.md
+                                  
+
 ```
 
 ## Dependencies
@@ -73,7 +103,39 @@ docker compose up
 
 2.  In the terminal output, find a URL which begins with `http://127.0.0.1:8888/lab?token=` Copy that URL and open it in your web browser.
 
-3.  To execute the analysis, open `src/sepsis-prediction-report.ipynb` in Jupyter Lab then under the "Kernel" menu choose "Restart Kernel and Run All Cells...".
+3.  To run the analysis, open a terminal and run the following commands:
+
+    1.  Load raw datasets - Run twice: once for train, once for test.
+
+        ``` bash
+        python src/01_data_loading.py 
+        python src/01_data_loading.py --filename s41598-020-73558-3_sepsis_survival_study_cohort.csv
+        ```
+
+    2.  Transform datasets - Processes and saves cleaned versions.
+
+        ``` bash
+        python src/02_data_transformation.py
+        ```
+
+    3.  Run EDA - Generates plots and descriptive stats.
+
+        ``` bash
+        python src/03_run_eda.py
+        ```
+
+    4.  Train and evaluate the model - Fits pipeline, computes metrics and SHAP, saves model.
+
+        ``` bash
+        python src/04_modeling_and_evaluation.py
+        ```
+
+    5.  Create analysis report - Generate HTML and PDF reports
+
+        ``` bash
+        quarto render reports/sepsis-predictor-report.qmd --to html
+        quarto render reports/sepsis-predictor-report.qmd --to pdf
+        ```
 
 ### Clean up
 
@@ -81,8 +143,7 @@ docker compose up
 
 ## **Developer notes**
 
-- Docker ensures full reproducibility without needing to manually configure dependencies, so anyone can run the environment consistently across operating systems without
-  dependency conflicts.
+-   Docker ensures full reproducibility without needing to manually configure dependencies, so anyone can run the environment consistently across operating systems without dependency conflicts.
 
 ### **Developer dependencies**
 
@@ -118,6 +179,6 @@ Thank you for exploring this project! We hope this analysis provides valuable in
 
 Happy learning! 🎓
 
----
+------------------------------------------------------------------------
 
 *For questions or discussions, feel free to open an issue or reach out to the maintainers.*
