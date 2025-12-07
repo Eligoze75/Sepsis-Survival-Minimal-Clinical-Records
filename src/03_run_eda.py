@@ -4,7 +4,8 @@ import seaborn as sns
 import click
 import os
 
-TRAIN_FILENAME = "./data/processed/sepsis_train.csv"
+PAR_PATH = os.path.dirname(os.path.dirname(__file__))
+TRAIN_FILENAME = os.path.join(PAR_PATH, "data/processed/sepsis_train.csv")
 UNIVARIATE_FILENAME = "univariate_visualization"
 MULTIVARIATE_FILENAME = "multivariate_visualization"
 CORR_HEATMAP_FILENAME = "correlation_heatmap"
