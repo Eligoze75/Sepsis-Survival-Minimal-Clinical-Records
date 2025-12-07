@@ -77,14 +77,14 @@ div.csl-indent {
   <ul class="collapse">
   <li><a href="#eda-key-findings" id="toc-eda-key-findings" class="nav-link" data-scroll-target="#eda-key-findings"><span class="header-section-number">3.1</span> EDA key findings</a></li>
   </ul></li>
-  <li><a href="#model-interpretation-methods" id="toc-model-interpretation-methods" class="nav-link" data-scroll-target="#model-interpretation-methods"><span class="header-section-number">4</span> Model Interpretation (Methods)</a>
+  <li><a href="#model-interpretation" id="toc-model-interpretation" class="nav-link" data-scroll-target="#model-interpretation"><span class="header-section-number">4</span> Model Interpretation</a>
   <ul class="collapse">
   <li><a href="#logistic-regression-coefficients" id="toc-logistic-regression-coefficients" class="nav-link" data-scroll-target="#logistic-regression-coefficients"><span class="header-section-number">4.1</span> Logistic Regression Coefficients</a></li>
   </ul></li>
   <li><a href="#results-discussion" id="toc-results-discussion" class="nav-link" data-scroll-target="#results-discussion"><span class="header-section-number">5</span> Results &amp; Discussion</a></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">6</span> References</a></li>
   </ul>
-<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="sepsis-predictor-report.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="..\sepsis-predictor-report.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
 </div>
 <main class="content" id="quarto-document-content">
 
@@ -130,13 +130,13 @@ div.csl-indent {
 <h2 data-number="3" class="anchored" data-anchor-id="exploratory-data-analysis-eda"><span class="header-section-number">3</span> Exploratory Data Analysis (EDA)</h2>
 <p>EDA is conducted first to see if any data wrangling is needed before proceeding to building a machine learning model.</p>
 <p>From the current train and test datasets, all the data are already clean. Age ranges from 0–100 years, Sex is encoded as male/female, and Episode Number varies between 1–5 with no missing values, so no imputation is required.</p>
-<div id="fig-univariate" class="quarto-float quarto-figure quarto-figure-center anchored" width="105%">
+<div id="fig-univariate" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-univariate-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="../img/univariate_visualization.png" id="fig-univariate" class="img-fluid figure-img" style="width:105.0%">
+<img src="../img/univariate_visualization.png" class="img-fluid figure-img" style="width:105.0%">
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-univariate-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-univariate-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Age, Episode Count &amp; Sex Distribution
 </figcaption>
 </figure>
 </div>
@@ -146,24 +146,24 @@ Figure&nbsp;1
 <li><strong>Episode count distribution:</strong> The middle bar chart reveals that most patients experience only a single prior sepsis episode, with rapidly decreasing frequency as episode count increases.</li>
 <li><strong>Sex vs Outcome counts:</strong> The heatmap on the right displays the cross-tabulation of sex and survival outcome. Both males and females predominantly fall under the <em>survived</em> category, with similar proportions, indicating sex alone is not a strong differentiator for survival.</li>
 </ul>
-<div id="fig-multivariate" class="quarto-float quarto-figure quarto-figure-center anchored" width="95%">
+<div id="fig-multivariate" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-multivariate-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="../img/multivariate_visualization.png" id="fig-multivariate" class="img-fluid figure-img" style="width:95.0%">
+<img src="../results/figures/multivariate_visualization.png" class="img-fluid figure-img" style="width:90.0%">
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-multivariate-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-multivariate-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Relationship of Features with Outcome
 </figcaption>
 </figure>
 </div>
 <p><a href="#fig-multivariate" class="quarto-xref">Figure&nbsp;2</a> presents multivariate distributions using boxplots, showing how age varies with episode count and patient sex across outcome groups.</p>
-<div id="fig-corr" class="quarto-float quarto-figure quarto-figure-center anchored" width="70%">
+<div id="fig-corr" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-corr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="../img/correlation_heatmap.png" id="fig-corr" class="img-fluid figure-img" style="width:70.0%">
+<img src="../results/figures/correlation_heatmap.png" class="img-fluid figure-img" style="width:70.0%">
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-corr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;3
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-corr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Feature Correlation Heatmap
 </figcaption>
 </figure>
 </div>
@@ -191,7 +191,7 @@ Figure&nbsp;3
 Table&nbsp;1: Logistic Regression performance on train/test sets.
 </figcaption>
 <div aria-describedby="tbl-metrics-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell-output cell-output-display" data-execution_count="2">
+<div class="cell-output cell-output-display" data-execution_count="10">
 <div>
 
 
@@ -200,28 +200,28 @@ Table&nbsp;1: Logistic Regression performance on train/test sets.
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
 <th data-quarto-table-cell-role="th">dataset</th>
-<th data-quarto-table-cell-role="th">roc_auc</th>
+<th data-quarto-table-cell-role="th">roc auc</th>
 <th data-quarto-table-cell-role="th">precision</th>
 <th data-quarto-table-cell-role="th">recall</th>
-<th data-quarto-table-cell-role="th">f1_score</th>
+<th data-quarto-table-cell-role="th">F1 score</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <th data-quarto-table-cell-role="th">0</th>
 <td>train</td>
-<td>0.70000</td>
-<td>0.9264</td>
-<td>1</td>
-<td>0.961</td>
+<td>0.70589</td>
+<td>0.926455</td>
+<td>1.0</td>
+<td>0.961823</td>
 </tr>
 <tr class="even">
 <th data-quarto-table-cell-role="th">1</th>
 <td>test</td>
 <td>0.58812</td>
-<td>0.8107</td>
-<td>1</td>
-<td>0.895</td>
+<td>0.810719</td>
+<td>1.0</td>
+<td>0.895466</td>
 </tr>
 </tbody>
 </table>
@@ -232,14 +232,14 @@ Table&nbsp;1: Logistic Regression performance on train/test sets.
 </figure>
 </div>
 </div>
-<p>By looking at the classification metrics above we can directly see that the model achieved a train ROC AUC of 0.7 and a test ROC AUC of 0.588. This is likely due to the very limited number of features available to train the model, which limits its ability to generalize well to unseen data and the data imbalance between target groups.</p>
+<p>By looking at the classification metrics above we can directly see that the model achieved a train ROC AUC of 0.706 and a test ROC AUC of 0.588. This is likely due to the very limited number of features available to train the model, which limits its ability to generalize well to unseen data and the data imbalance between target groups.</p>
 <p>As seen in <a href="#fig-univariate" class="quarto-xref">Figure&nbsp;1</a>, the predicted probability distributions for Survived and Died overlap almost completely.<br>
 This explains the weak ROC AUC: the model struggles to rank classes effectively given the limited features available.<br>
 <a href="#tbl-metrics" class="quarto-xref">Table&nbsp;1</a> confirms that recall and precision are inflated due to class imbalance, and the model overfits by performing much better on training data than test data.</p>
 </section>
 </section>
-<section id="model-interpretation-methods" class="level2" data-number="4">
-<h2 data-number="4" class="anchored" data-anchor-id="model-interpretation-methods"><span class="header-section-number">4</span> Model Interpretation (Methods)</h2>
+<section id="model-interpretation" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="model-interpretation"><span class="header-section-number">4</span> Model Interpretation</h2>
 <section id="logistic-regression-coefficients" class="level3" data-number="4.1">
 <h3 data-number="4.1" class="anchored" data-anchor-id="logistic-regression-coefficients"><span class="header-section-number">4.1</span> Logistic Regression Coefficients</h3>
 <p>The final logistic model learned the relationship between features and survival:</p>
@@ -255,8 +255,19 @@ This explains the weak ROC AUC: the model struggles to rank classes effectively 
 <h4 data-number="4.1.1" class="anchored" data-anchor-id="shap-explanation-and-feature-importance"><span class="header-section-number">4.1.1</span> SHAP Explanation and Feature Importance</h4>
 <p>[<strong>SHAP</strong> <em>(SHapley Additive exPlanations)</em>] <span class="citation" data-cites="lundberg2025shap">(<a href="#ref-lundberg2025shap" role="doc-biblioref">Lundberg, Lee, and contributors 2025</a>)</span> is a method used to explain how individual features contribute to a machine learning model’s predictions. It assigns a numerical value to each feature that represents how much that feature pushes the prediction up or down. A higher SHAP value indicates a higher level of importance, meaning the feature has a stronger influence on the model’s decision. SHAP is particularly useful for understanding both global feature importance and how a single observation is being predicted. In this analysis, SHAP values are used to determine which features are most important in the logistic regression model predicting sepsis hospital survival.</p>
 <p>To interpret the logistic regression model, SHAP values were computed to measure the contribution of each feature to the model’s output. The model includes three predictors: age_in_years, sex, and episode_number. The SHAP values represent the average magnitude by which each feature affects the prediction across all test samples.</p>
-<p>The SHAP results confirm that <strong>age_in_years</strong> is the most influential feature, with a mean SHAP value of <strong>0.82624</strong>, indicating that it has the strongest impact on survival predictions. The next most important feature is <strong>sex</strong>, with a mean SHAP value of <strong>0.08907</strong>, although substantially weaker than <strong>age_in_years</strong>. Finally, <strong>episode_number</strong> shows the lowest SHAP contribution, at <strong>0.01442</strong>, suggesting minimal influence on the model output.</p>
-<p>All of these results match the previous correlation analysis, and the coefficients from the logistic regression.</p>
+<p>The SHAP summary plot below visualizes how each feature contributes to the logistic regression model’s output. The longest bar corresponds to the feature with the highest average absolute SHAP impact — meaning it contributes the most to shifting predictions up or down.</p>
+<div id="fig-shap" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-shap-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../results/figures/shap_values_plot.png" class="img-fluid figure-img" style="width:90.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-shap-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: SHAP Feature Importance Summary
+</figcaption>
+</figure>
+</div>
+<p>From the plot, <strong>Age is clearly the most influential feature</strong>, showing the largest magnitude of SHAP values. This means that changes in age have the strongest effect on predicted survival probability. <strong>Episode number</strong> has noticeably lower impact, while <strong><code>is_male</code> (encoded from Sex) contributes very little to the model</strong>, indicating minimal difference in predicted survival between males and females.</p>
+<p>These observations align with earlier findings from the coefficients and correlation analysis — the model relies primarily on age when predicting survival, while the other two variables provide limited predictive signal.</p>
 <p>Overall, the SHAP analysis shows that age is the dominant predictor used by the model, and that there’s a negative association between age and survival probability. Sex has minimal influence, but it suggests also that males have a slightly smaller chance to survive to a Sepsis episode.</p>
 </section>
 </section>
@@ -264,7 +275,7 @@ This explains the weak ROC AUC: the model struggles to rank classes effectively 
 <section id="results-discussion" class="level2" data-number="5">
 <h2 data-number="5" class="anchored" data-anchor-id="results-discussion"><span class="header-section-number">5</span> Results &amp; Discussion</h2>
 <p>The results of the analysis indicate that age is the dominant factor influencing survival in sepsis patients. Both the correlation analysis and SHAP explainability results show that older patients have a significantly lower probability of survival, with age having a mean SHAP importance value nearly ten times higher than any other feature. In contrast, sex and episode number contribute minimally, suggesting that demographic features alone cannot capture the full complexity of sepsis mortality risk.</p>
-<p>The model achieved a test ROC AUC of <strong>0.588</strong>, indicating limited discriminative ability.<br>
+<p>The model achieved a test ROC AUC of 0.588, indicating limited discriminative ability.<br>
 Despite a high recall of 1.000 and a precision of 0.811 on the test set, these inflated values are largely driven by the strong class imbalance (approximately 93% survivors vs 7% non-survivors).</p>
 </section>
 <section id="references" class="level2 unnumbered" data-number="6">
