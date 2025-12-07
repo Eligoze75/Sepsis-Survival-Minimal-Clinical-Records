@@ -1,23 +1,31 @@
 import click
-import os
-from utils import *
-from validations import *
+from utils import load_ucisepsis
+from validations import check_file_format
 import sys
+import os
+
+DEFAULT_FILENAME = "s41598-020-73558-3_sepsis_survival_primary_cohort.csv"
+PAR_PATH = os.path.dirname(os.path.dirname(__file__))
+DEFAULT_OUTPUT = os.path.join(PAR_PATH, "data/raw")
+
 
 @click.command()
 @click.option(
     "--filename",
     "-n",
-    required=True,
+    default=DEFAULT_FILENAME,
+    required=False,
+    show_default=True,
     help="Name of CSV file INSIDE the UCI ZIP archive to load",
 )
 @click.option(
     "--output",
     "-o",
-    required=True,
+    default=DEFAULT_OUTPUT,
+    required=False,
+    show_default=True,
     help="Path to directory where raw data will be written to",
 )
-
 def download_data(filename, output):
     """
     Downloads the UCI Sepsis Survival dataset ZIP,
@@ -45,16 +53,17 @@ def download_data(filename, output):
         click.echo("File format validation failed.")
         click.echo(str(e))
         sys.exit("Stopping execution due to invalid file format.")
-    
+
     # Save output
     try:
         output_dir = os.path.dirname(output)
         # To ensure the output path exists
         if output_dir:
             os.makedirs(output_dir, exist_ok=True)
-    
-        df.to_csv(output, index=False)
-        click.echo(f"Saved dataset to: {output}")
+
+        save_filename = os.path.join(output, filename)
+        df.to_csv(save_filename, index=False)
+        click.echo(f"Saved dataset to: {save_filename}")
     except Exception as e:
         click.echo(f"Failed to save file to {output}")
         click.echo(str(e))
