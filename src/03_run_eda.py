@@ -27,14 +27,14 @@ def load_train_df(filename):
     Raises:
         FileNotFoundError: If the specified file does not exist.
     """
-    print(f"\n[Loading Data] {filename}...\n")
+    click.echo(f"\n[Loading Data] {filename}...\n")
     return pd.read_csv(filename)
 
 
 def compute_descriptive_stats(df):
     """Compute and display descriptive statistics for the dataset.
 
-    This function prints summary statistics for numerical columns, category counts
+    This function click.echos summary statistics for numerical columns, category counts
     for categorical features, and the proportion of missing values for each
     column.
 
@@ -42,17 +42,17 @@ def compute_descriptive_stats(df):
         df (pandas.DataFrame): The input DataFrame containing the dataset to analyze.
 
     Returns:
-        None: This function prints results but does not return any value.
+        None: This function click.echos results but does not return any value.
     """
-    print("\n[Descriptive statistics] summary:\n\n")
-    print(df.describe())
-    print("\n[Descriptive statistics] Counts by category:\n\n")
-    print("\nNumber of observations of each Sex\n")
-    print(df["sex"].value_counts(True, dropna=False))
-    print("\nNumber of observations of each Hospital Outcome (target)\n")
-    print(df["hospital_outcome_cat"].value_counts(True, dropna=False))
-    print("\n[Descriptive statistics] Missing values ratio per column:\n")
-    print(df.isna().mean())
+    click.echo("\n[Descriptive statistics] summary:\n\n")
+    click.echo(df.describe())
+    click.echo("\n[Descriptive statistics] Counts by category:\n\n")
+    click.echo("\nNumber of observations of each Sex\n")
+    click.echo(df["sex"].value_counts(True, dropna=False))
+    click.echo("\nNumber of observations of each Hospital Outcome (target)\n")
+    click.echo(df["hospital_outcome_cat"].value_counts(True, dropna=False))
+    click.echo("\n[Descriptive statistics] Missing values ratio per column:\n")
+    click.echo(df.isna().mean())
 
 
 def get_univariate_subplots(df, save_filename, extension, show):
@@ -296,18 +296,18 @@ def main(filename, file_extention, use_corr_cols, show_visualizations):
         None: The function saves and optionally displays the generated visualizations,
         but does not return any value.
     """
-    print(" " * 35, "EXPLORATORY DATA ANALYSIS\n\n")
+    click.echo(" " * 35, "EXPLORATORY DATA ANALYSIS\n\n")
     df = load_train_df(filename)
     compute_descriptive_stats(df)
-    print("\n[Univariate and Bivariate visualizations]\n")
+    click.echo("\n[Univariate and Bivariate visualizations]\n")
     get_univariate_subplots(
         df, UNIVARIATE_FILENAME, extension=file_extention, show=show_visualizations
     )
-    print("\n[Univariate and Bivariate visualizations]\n")
+    click.echo("\n[Univariate and Bivariate visualizations]\n")
     get_multivariate_subplots(
         df, MULTIVARIATE_FILENAME, extension=file_extention, show=show_visualizations
     )
-    print("\n[Correlation Heatmap]\n\n")
+    click.echo("\n[Correlation Heatmap]\n\n")
     get_corr_heatmap(
         df,
         use_corr_cols,
