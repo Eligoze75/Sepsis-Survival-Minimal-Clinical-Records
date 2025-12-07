@@ -16,6 +16,7 @@ D_PROCESSED_TRAIN_FILENAME = os.path.join(
     DEFAULT_PROCESSED_DATA_PATH, "sepsis_train.csv"
 )
 D_PROCESSED_TEST_FILENAME = os.path.join(DEFAULT_PROCESSED_DATA_PATH, "sepsis_test.csv")
+SUMMARY_PATH = "results/tables/train_summary.csv"
 
 
 @click.command()
@@ -95,16 +96,15 @@ def clean_data(input_train, input_test, output_train, output_test):
     train_summary = train_df.describe()
     click.echo(train_summary)
     click.echo("\n[Summary] saving train stats")
-    summary_path = "results/tables/train_summary.csv"
-    summary_dir = os.path.dirname(summary_path)
+    summary_dir = os.path.dirname(SUMMARY_PATH)
     if summary_dir:
         os.makedirs(summary_dir, exist_ok=True)
 
-    train_summary.to_csv(summary_path)
-    click.echo(f"[Summary] Successfully saved training summary statistics to: {summary_path}")
+    train_summary.to_csv(SUMMARY_PATH)
+    click.echo(f"[Summary] Successfully saved training summary statistics to: {SUMMARY_PATH}")
 
     # Save outputs
-    click.echo(f"[Preprocessing] Finished process, saving datasets...")
+    click.echo("[Preprocessing] Finished process, saving datasets...")
     try:
         train_dir = os.path.dirname(output_train)
         test_dir = os.path.dirname(output_test)
