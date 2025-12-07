@@ -86,9 +86,16 @@ docker compose up
 
 ### **Developer dependencies**
 
--   `conda` (version 25.7.0 or higher)
+- `python` (version 3.12)
 
--   `conda-lock` (version 3.0.4 or higher)
+- `conda` (version 25.7.0 or higher)
+
+- `conda-lock` (version 3.0.4 or higher)
+
+- `quarto` (version 1.8.26)
+
+- `jupyterlab` (version 4.4.10)
+
 
 ### **Adding a new dependency**
 
