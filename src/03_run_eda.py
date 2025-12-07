@@ -2,12 +2,17 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import click
+import os
 
 TRAIN_FILENAME = "./data/processed/sepsis_train.csv"
 UNIVARIATE_FILENAME = "univariate_visualization"
 MULTIVARIATE_FILENAME = "multivariate_visualization"
 CORR_HEATMAP_FILENAME = "correlation_heatmap"
 DEFAULT_EXTENTION = "png"
+SUMMARY_PATH = "results/tables/train_summary.csv"
+SEX_VALCOUNTS_PATH = "results/tables/sex_valcounts.csv"
+TARGET_VALCOUNTS_PATH = "results/tables/target_valcounts.csv"
+DF_MISSINGVALS_PATH = "results/tables/missing_vals_ratio.csv"
 DEFAULT_SHOW = True
 CORR_COLS = ["age", "sex", "episode_number", "hospital_outcome"]
 
@@ -34,7 +39,7 @@ def load_train_df(filename):
 def compute_descriptive_stats(df):
     """Compute and display descriptive statistics for the dataset.
 
-    This function click.echos summary statistics for numerical columns, category counts
+    This function displays and saves summary statistics for numerical columns, category counts
     for categorical features, and the proportion of missing values for each
     column.
 
@@ -46,13 +51,24 @@ def compute_descriptive_stats(df):
     """
     click.echo("\n[Descriptive statistics] summary:\n\n")
     click.echo(df.describe())
+    summary_dir = os.path.dirname(SUMMARY_PATH)
+    if summary_dir:
+        os.makedirs(summary_dir, exist_ok=True)
+    df.describe().to_csv(SUMMARY_PATH)
+    click.echo(f"Successfully saved training summary stats to: {SUMMARY_PATH}")
     click.echo("\n[Descriptive statistics] Counts by category:\n\n")
     click.echo("\nNumber of observations of each Sex\n")
-    click.echo(df["sex"].value_counts(True, dropna=False))
+    sex_vc = df["sex"].value_counts(True, dropna=False)
+    click.echo(sex_vc)
+    sex_vc.to_csv(SEX_VALCOUNTS_PATH, index=False)
     click.echo("\nNumber of observations of each Hospital Outcome (target)\n")
-    click.echo(df["hospital_outcome_cat"].value_counts(True, dropna=False))
+    target_vc = df["hospital_outcome_cat"].value_counts(True, dropna=False)
+    click.echo(target_vc)
+    target_vc.to_csv(TARGET_VALCOUNTS_PATH, index=False)
     click.echo("\n[Descriptive statistics] Missing values ratio per column:\n")
-    click.echo(df.isna().mean())
+    missing_vals = df.isna().mean()
+    click.echo(missing_vals)
+    missing_vals.to_csv(DF_MISSINGVALS_PATH, index=False)
 
 
 def get_univariate_subplots(df, save_filename, extension, show):
@@ -65,7 +81,7 @@ def get_univariate_subplots(df, save_filename, extension, show):
     2. A bar plot showing the distribution of episode counts.
     3. A heatmap showing the cross-tabulation of sex and hospital outcome.
 
-    The resulting figure is saved to the img/ folder and optionally displayed.
+    The resulting figure is saved to the `results/figures/` folder and optionally displayed.
 
     Args:
         df (pandas.DataFrame): The input DataFrame containing the data to plot.
@@ -107,7 +123,7 @@ def get_univariate_subplots(df, save_filename, extension, show):
 
     plt.tight_layout()
     plt.savefig(
-        f"img/{save_filename}.{extension}",
+        f"results/figures/{save_filename}.{extension}",
         dpi=300,
         bbox_inches="tight",
         transparent=True,
@@ -135,7 +151,7 @@ def get_multivariate_subplots(df, save_filename, extension, show):
         extension (str): File extension for the output image (e.g., ``"png"``,
             ``"pdf"``).
         show (bool): If True, displays the generated plots. If False,
-            only saves the figure to the ``img/`` directory.
+            only saves the figure to the ``results/figures/`` directory.
 
     Returns:
         None: The function saves and optionally displays the figure but does not
@@ -182,7 +198,7 @@ def get_multivariate_subplots(df, save_filename, extension, show):
 
     plt.tight_layout()
     plt.savefig(
-        f"img/{save_filename}.{extension}",
+        f"results/figures/{save_filename}.{extension}",
         dpi=300,
         bbox_inches="tight",
         transparent=True,
@@ -207,7 +223,7 @@ def get_corr_heatmap(df, use_cols, save_filename, extension, show):
         extension (str): File extension for the saved image
             (e.g., ``"png"``, ``"pdf"``, ``"svg"``).
         show (bool): If True, displays all visualization plots. If False,
-            the plots will only be saved to the ``img/`` directory.
+            the plots will only be saved to the ``results/figures/`` directory.
 
     Returns:
         None: The function saves and optionally displays the correlation heatmap,
@@ -233,7 +249,7 @@ def get_corr_heatmap(df, use_cols, save_filename, extension, show):
     plt.title("Correlation Heatmap of Sepsis Numerical Features")
     plt.tight_layout()
     plt.savefig(
-        f"img/{save_filename}.{extension}",
+        f"results/figures/{save_filename}.{extension}",
         dpi=300,
         bbox_inches="tight",
         transparent=True,
@@ -290,7 +306,7 @@ def main(filename, file_extention, use_corr_cols, show_visualizations):
         extension (str): File extension for the saved image
             (e.g., ``"png"``, ``"pdf"``, ``"svg"``).
         show (bool): If True, displays the plot. If False,
-            the plot is only saved to the ``img/`` directory.
+            the plot is only saved to the ``results/figures/`` directory.
 
     Returns:
         None: The function saves and optionally displays the generated visualizations,

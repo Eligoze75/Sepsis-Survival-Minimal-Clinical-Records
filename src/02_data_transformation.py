@@ -16,7 +16,6 @@ D_PROCESSED_TRAIN_FILENAME = os.path.join(
     DEFAULT_PROCESSED_DATA_PATH, "sepsis_train.csv"
 )
 D_PROCESSED_TEST_FILENAME = os.path.join(DEFAULT_PROCESSED_DATA_PATH, "sepsis_test.csv")
-SUMMARY_PATH = "results/tables/train_summary.csv"
 
 
 @click.command()
@@ -90,20 +89,6 @@ def clean_data(input_train, input_test, output_train, output_test):
     click.echo(train_df.isna().mean())
     click.echo("\nMissing values (test):")
     click.echo(test_df.isna().mean())
-
-    # Save summary statistics for training data
-    click.echo("\n\n[Summary] train stats:")
-    train_summary = train_df.describe()
-    click.echo(train_summary)
-    click.echo("\n[Summary] saving train stats")
-    summary_dir = os.path.dirname(SUMMARY_PATH)
-    if summary_dir:
-        os.makedirs(summary_dir, exist_ok=True)
-
-    train_summary.to_csv(SUMMARY_PATH)
-    click.echo(
-        f"[Summary] Successfully saved training summary statistics to: {SUMMARY_PATH}"
-    )
 
     # Save outputs
     click.echo("[Preprocessing] Finished process, saving datasets...")
