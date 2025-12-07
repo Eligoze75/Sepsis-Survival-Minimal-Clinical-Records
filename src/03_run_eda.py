@@ -313,7 +313,7 @@ def main(filename, file_extention, use_corr_cols, show_visualizations):
         None: The function saves and optionally displays the generated visualizations,
         but does not return any value.
     """
-    click.echo(" " * 35, "EXPLORATORY DATA ANALYSIS\n\n")
+    click.echo("# EXPLORATORY DATA ANALYSIS\n\n")
     df = load_train_df(filename)
     compute_descriptive_stats(df)
     click.echo("\n[Univariate and Bivariate visualizations]\n")

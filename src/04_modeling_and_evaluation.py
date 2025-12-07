@@ -181,7 +181,7 @@ def model_interpretation(model, X_train, X_test):
     coeffs = model.named_steps["logisticregression"].coef_
     click.echo(f"Model intercept: {intercept}")
     click.echo(f"Model coefficents:")
-    df_coefs = pd.DataFrame(dict(zip(clean_feature_names, coeffs[0])))
+    df_coefs = pd.DataFrame(dict(zip(clean_feature_names, coeffs[0])), index=[0])
     click.echo(df_coefs)
     df_coefs.to_csv(CLF_COEFS_PATH, index=False)
     click.echo(f"Successfully saved model coefficients to: {CLF_COEFS_PATH}")
@@ -195,7 +195,7 @@ def model_interpretation(model, X_train, X_test):
     explainer = shap.LinearExplainer(logreg, X_train_s)
     shap_values = explainer.shap_values(X_test_s)
     plt.figure(figsize=(7, 4))
-    shap.summary_plot(shap_values, X_test_s, feature_names=clean_feature_names)
+    shap.summary_plot(shap_values, X_test_s, feature_names=clean_feature_names, show=False)
     plt.title("Logistic Classifier Shap values")
     plt.tight_layout()
     plt.savefig(
@@ -224,11 +224,6 @@ def model_interpretation(model, X_train, X_test):
     show_default=True,
     required=False,
     help="Path to cleaned TEST CSV",
-)
-@click.option(
-    "--output-table",
-    type=str,
-    help="Path to directory where the table will be written to",
 )
 def main(train_filename, test_filename):
     """Reads and splits the cleaned data, fits a sepsis prediction model,
