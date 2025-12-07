@@ -12,7 +12,18 @@ from sklearn.metrics import (
 )
 from sklearn.model_selection import RandomizedSearchCV
 import click
-import pickle
+import joblib
+import os
+
+
+NUMERIC_FEATURES = ["age", "episode_number"]
+CATEGORICAL_FEATURES = ["sex"]
+FEATURES = NUMERIC_FEATURES + CATEGORICAL_FEATURES
+TARGET = "hospital_outcome"
+RANDOM_STATE = 15
+PAR_PATH = os.path.dirname(os.path.dirname(__file__))
+MODEL_PATH = os.path.join(PAR_PATH, "results/models/logistic_reg.pkl")
+CLF_METRICS_PATH = os.path.join(PAR_PATH, "results/tables/classification_metrics.csv")
 
 
 @click.command()
@@ -26,33 +37,29 @@ import pickle
 def main(train_df, test_df, output_table):
     """Reads and splits the cleaned data, fits a sepsis prediction model, and outputs a table summarizing the classification metrics."""
 
-    RANDOM_STATE = 15
-
     # Read and split the data
+    click.echo("[DATA COLLECTION] Reading train and test datasets...")
     train_df = pd.read_csv(train_df)
     test_df = pd.read_csv(test_df)
-
+    click.echo("[DATA COLLECTION] Split features and target...")
     X_train, y_train = (
-        train_df.drop(columns=["hospital_outcome", "hospital_outcome_cat"]),
-        train_df["hospital_outcome"],
+        train_df[FEATURES],
+        train_df[TARGET],
     )
 
     X_test, y_test = (
-        test_df.drop(columns=["hospital_outcome", "hospital_outcome_cat"]),
-        test_df["hospital_outcome"],
+        test_df[FEATURES],
+        test_df[TARGET],
     )
 
     # Create preprocessor
-    numeric_features = ["age", "episode_number"]
-    categorical_features = ["sex"]
-    features = numeric_features + categorical_features
-
-    # As suggested by EDA, we standardize numeric features and one-hot encode categorical features
+    ## As suggested by EDA, we standardize numeric features and one-hot encode categorical features
+    click.echo("[FEATURE ENGINEERING] Creating column transformer...")
     lr_preprocessor = make_column_transformer(
-        (StandardScaler(), numeric_features),
-        (OneHotEncoder(drop="if_binary"), categorical_features),
+        (StandardScaler(), NUMERIC_FEATURES),
+        (OneHotEncoder(drop="if_binary"), CATEGORICAL_FEATURES),
     )
-
+    click.echo("[FEATURE ENGINEERING] Creating model pipeline...")
     # Create Pipeline
     logistic_pipe = make_pipeline(
         lr_preprocessor,
@@ -60,6 +67,7 @@ def main(train_df, test_df, output_table):
     )
 
     # Tune the model
+    click.echo("[MODEL TUNING] RandomizedSearchCV starting...")
     param_grid = {
         "logisticregression__C": loguniform(1e-4, 1e2),
         "logisticregression__class_weight": [None, "balanced"],
@@ -76,11 +84,13 @@ def main(train_df, test_df, output_table):
         cv=5,
     )
     lr_random_search.fit(X_train, y_train)
+    click.echo(
+        "[MODEL TUNING] RandomizedSearchCV finished successfully -> saving optimal model"
+    )
     lr_best_model = lr_random_search.best_estimator_
 
-    with open("lr_best_model.pickle", "wb") as f:
-        pickle.dump(lr_best_model, f)
-
+    joblib.dump(lr_best_model, MODEL_PATH)
+    click.echo(f"Successfully saved model as: {MODEL_PATH}")
     # Classification Metrics(adapted from DSCI 573 lecture 1)
     y_pred_train = lr_best_model.predict(X_train)
     y_pred_test = lr_best_model.predict(X_test)
@@ -102,19 +112,12 @@ def main(train_df, test_df, output_table):
             "F1 score": [f1_train, f1_test],
         }
     )
-
-    with open("classification_metrics.pickle", "wb") as f:
-        pickle.dump(classification_metrics, f)
-
-    # Outputs classification metrics table
-    try:
-        classification_metrics.to_csv(output_table, index=False)
-
-    except Exception as e:
-        print("Error saving output files:", e)
-        sys.exit(1)
-
-    print(f"Saved classification metrics to: {output_table}")
+    click.echo(classification_metrics)
+    dir_ = os.path.dirname(CLF_METRICS_PATH)
+    if dir_:
+        os.makedirs(dir_, exist_ok=True)
+    classification_metrics.to_csv(CLF_METRICS_PATH, index=False)
+    click.echo(f"Successfully saved training summary stats to: {CLF_METRICS_PATH}")
 
 
 if __name__ == "__main__":
