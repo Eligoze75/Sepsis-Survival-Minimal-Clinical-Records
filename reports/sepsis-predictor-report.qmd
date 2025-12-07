@@ -31,7 +31,7 @@ This project aims to explore whether basic clinical and demographic factors coul
 
 A dataset of over 110,000 hospital admissions from Norway (2011–2012) was obtained from the UCI Sepsis Survival Minimal Clinical Records repository [@chicco2020sepsisdataset]. After the Exploratory Data Analysis, a Logistic Regression model was trained and tuned via randomized search with cross-validation. Model performance was evaluated using standard metrics, including ROC AUC, Precision, Recall, and F1-score, and further interpreted using SHAP (SHapley Additive exPlanations) values to assess feature importance and contribution.
 
-The results showed that the model achieved a ROC AUC of `{python} f"{metrics['roc_auc'][1]:.3f}"`, with high recall but limited discriminative power. Age emerged as the strongest predictor of survival: as you get older your probability of survival decreases, with SHAP values confirming its dominant influence on the model’s output. In contrast, Sex and Episode Number had minimal impact on predictions. These findings suggest that while demographic factors provide limited predictive ability on their own, Age remains a crucial indicator of mortality risk in sepsis patients.
+The results showed that the model achieved a ROC AUC of `{python} f"{metrics['roc auc'][1]:.3f}"`, with high recall but limited discriminative power. Age emerged as the strongest predictor of survival: as you get older your probability of survival decreases, with SHAP values confirming its dominant influence on the model’s output. In contrast, Sex and Episode Number had minimal impact on predictions. These findings suggest that while demographic factors provide limited predictive ability on their own, Age remains a crucial indicator of mortality risk in sepsis patients.
 
 The analysis highlights the need for more clinical features to improve model accuracy, showing that Age and Gender are not good predictors for survival probabilities.
 
@@ -51,7 +51,8 @@ EDA is conducted first to see if any data wrangling is needed before proceeding 
 
 From the current train and test datasets, all the data are already clean. Age ranges from 0–100 years, Sex is encoded as male/female, and Episode Number varies between 1–5 with no missing values, so no imputation is required.
 
-![](../img/univariate_visualization.png){#fig-univariate width=105%}
+![Figure 1. Age, Episode Count & Sex Distribution](../img/univariate_visualization.png){#fig-univariate width=105%}
+
 
 @fig-univariate presents three univariate visualizations that provide an initial understanding of feature distributions and how they relate to survival outcome:
 
@@ -60,11 +61,12 @@ From the current train and test datasets, all the data are already clean. Age ra
 - **Sex vs Outcome counts:** The heatmap on the right displays the cross-tabulation of sex and survival outcome. Both males and females predominantly fall under the *survived* category, with similar proportions, indicating sex alone is not a strong differentiator for survival.
 
 
-![](../img/multivariate_visualization.png){#fig-multivariate width=95%}
+![Figure 2. Relationship of Features with Outcome](../results/figures/multivariate_visualization.png){#fig-multivariate width=90%}
 
 @fig-multivariate presents multivariate distributions using boxplots, showing how age varies with episode count and patient sex across outcome groups.
 
-![](../img/correlation_heatmap.png){#fig-corr width=70%}
+![Figure 3. Feature Correlation Heatmap](../results/figures/correlation_heatmap.png){#fig-corr width=70%}
+
 
 @fig-corr displays the correlation heatmap, confirming that age is the most strongly related feature to survival outcome, while sex and episode count show weaker associations.
 
@@ -91,7 +93,7 @@ metrics
 ```
 
 By looking at the classification metrics above we can directly see that the model achieved a 
-train ROC AUC of `{python} round(float(metrics['roc_auc'][0]),3)` and a test ROC AUC of `{python} round(float(metrics['roc_auc'][1]),3)`. 
+train ROC AUC of `{python} round(float(metrics['roc auc'][0]),3)` and a test ROC AUC of `{python} round(float(metrics['roc auc'][1]),3)`. 
 This is likely due to the very limited number of features available to train the model, 
 which limits its ability to generalize well to unseen data and the data imbalance between target groups.
 
@@ -107,9 +109,8 @@ This explains the weak ROC AUC: the model struggles to rank classes effectively 
 #| echo: false
 import pandas as pd
 import pickle
-
-with open("../results/models/logistic_reg.pkl", "rb") as f:
-    lr_best_model = pickle.load(f)
+import joblib
+lr_best_model = joblib.load("../results/models/logistic_reg.pkl")
 
 coef = pd.read_csv("../results/tables/model_coefficients.csv")
 intercept = lr_best_model.named_steps["logisticregression"].intercept_[0]
@@ -146,55 +147,19 @@ Even though the model underperforms, we can still interpret the learned coeffici
 
 To interpret the logistic regression model, SHAP values were computed to measure the contribution of each feature to the model’s output. The model includes three predictors: age_in_years, sex, and episode_number. The SHAP values represent the average magnitude by which each feature affects the prediction across all test samples.
 
-```{python}
-#| echo: false
-import numpy as np
-import shap
+The SHAP summary plot below visualizes how each feature contributes to the logistic regression model’s output. 
+The longest bar corresponds to the feature with the highest average absolute SHAP impact — meaning it contributes 
+the most to shifting predictions up or down.
 
-with open("../results/models/logistic_reg.pkl", "rb") as f:
-    lr_best_model = pickle.load(f)
+![Figure 4. SHAP Feature Importance Summary](../results/figures/shap_values_plot.png){#fig-shap width=90%}
 
-train_df = pd.read_csv("../data/processed/sepsis_train.csv")
-test_df  = pd.read_csv("../data/processed/sepsis_test.csv")
+From the plot, **Age is clearly the most influential feature**, showing the largest magnitude of SHAP values. This means 
+that changes in age have the strongest effect on predicted survival probability. **Episode number** has noticeably lower 
+impact, while **`is_male` (encoded from Sex) contributes very little to the model**, indicating minimal difference in predicted survival between males 
+and females.
 
-X_train = train_df.drop(columns=["hospital_outcome", "hospital_outcome_cat"])
-X_test  = test_df.drop(columns=["hospital_outcome", "hospital_outcome_cat"])
-
-feature_names = lr_best_model.named_steps["columntransformer"].get_feature_names_out()
-clean_feature_names = [
-    f.replace("onehotencoder__", "")
-     .replace("standardscaler__", "")
-     .replace("sex_male", "is_male")
-     .replace("sex_female", "is_female")
-    for f in feature_names
-]
-
-X_train_s = lr_best_model.named_steps["columntransformer"].transform(X_train)
-X_test_s  = lr_best_model.named_steps["columntransformer"].transform(X_test)
-
-logreg = lr_best_model.named_steps["logisticregression"]
-explainer = shap.LinearExplainer(logreg, X_train_s)
-shap_values = explainer.shap_values(X_test_s)
-
-mean_abs_shap = np.abs(shap_values).mean(axis=0)
-
-shap_importance = (
-    pd.DataFrame({"feature": clean_feature_names, "mean_abs_shap": mean_abs_shap})
-    .sort_values("mean_abs_shap", ascending=False)
-    .reset_index(drop=True)
-)
-
-top1   = shap_importance.iloc[0]
-top2   = shap_importance.iloc[1]
-bottom = shap_importance.iloc[-1]
-```
-
-The SHAP results confirm that **`{python} top1['feature']`** is the most influential feature, with a mean SHAP value of **`{python} f"{top1['mean_abs_shap']:.5f}"`**, indicating that it has 
-the strongest impact on survival predictions. The next most important feature is **`{python} top2['feature']`**, with a mean SHAP value of **`{python} f"{top2['mean_abs_shap']:.5f}"`**, 
-although substantially weaker than **`{python} top1['feature']`**. 
-Finally, **`{python} bottom['feature']`** shows the lowest SHAP contribution, at **`{python} f"{bottom['mean_abs_shap']:.5f}"`**, suggesting minimal influence on the model output.
-
-All of these results match the previous correlation analysis, and the coefficients from the logistic regression.
+These observations align with earlier findings from the coefficients and correlation analysis — the model relies 
+primarily on age when predicting survival, while the other two variables provide limited predictive signal.
 
 Overall, the SHAP analysis shows that age is the dominant predictor used by the model, and that there's a negative association between age and survival probability. Sex has minimal influence, but it suggests also that males have a slightly smaller chance to survive to a Sepsis episode.
 
@@ -202,7 +167,7 @@ Overall, the SHAP analysis shows that age is the dominant predictor used by the 
 
 The results of the analysis indicate that age is the dominant factor influencing survival in sepsis patients. Both the correlation analysis and SHAP explainability results show that older patients have a significantly lower probability of survival, with age having a mean SHAP importance value nearly ten times higher than any other feature. In contrast, sex and episode number contribute minimally, suggesting that demographic features alone cannot capture the full complexity of sepsis mortality risk.
 
-The model achieved a test ROC AUC of **`{python} f"{metrics['roc_auc'][1]:.3f}"`**, indicating limited discriminative ability.  
+The model achieved a test ROC AUC of `{python} f"{metrics['roc auc'][1]:.3f}"`, indicating limited discriminative ability.  
 Despite a high recall of `{python} f"{metrics['recall'][1]:.3f}"` and a precision of `{python} f"{metrics['precision'][1]:.3f}"` on the test set,
 these inflated values are largely driven by the strong class imbalance (approximately 93% survivors vs 7% non-survivors).
 
