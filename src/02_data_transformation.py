@@ -101,7 +101,9 @@ def clean_data(input_train, input_test, output_train, output_test):
         os.makedirs(summary_dir, exist_ok=True)
 
     train_summary.to_csv(SUMMARY_PATH)
-    click.echo(f"[Summary] Successfully saved training summary statistics to: {SUMMARY_PATH}")
+    click.echo(
+        f"[Summary] Successfully saved training summary statistics to: {SUMMARY_PATH}"
+    )
 
     # Save outputs
     click.echo("[Preprocessing] Finished process, saving datasets...")
