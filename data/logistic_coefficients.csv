@@ -1,0 +1,5 @@
+feature,coef
+intercept,2.99293
+age_in_years,-1.06898
+episode_number,-0.01806
+sex,-0.17849
