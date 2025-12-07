@@ -24,7 +24,7 @@ bibliography: references.bib
 ```{python}
 #| echo: false
 import pandas as pd
-metrics = pd.read_csv("../data/metrics.csv")
+metrics = pd.read_csv("../results/tables/classification_metrics.csv")
 ```
 
 This project aims to explore whether basic clinical and demographic factors could be used to predict sepsis survival outcomes. Specifically, the variables Age, Sex, and Sepsis Episode Number were examined to determine their influence on a patient’s probability of survival after hospitalization.
@@ -100,19 +100,22 @@ As seen in @fig-univariate, the predicted probability distributions for Survived
 This explains the weak ROC AUC: the model struggles to rank classes effectively given the limited features available.  
 @tbl-metrics confirms that recall and precision are inflated due to class imbalance, and the model overfits by performing much better on training data than test data.
 
-## Model Interpretation (Methods)
+## Model Interpretation
 ### Logistic Regression Coefficients
 
 ```{python}
 #| echo: false
 import pandas as pd
+import pickle
 
-coef = pd.read_csv("../data/logistic_coefficients.csv")
+with open("../results/models/logistic_reg.pkl", "rb") as f:
+    lr_best_model = pickle.load(f)
 
-intercept = coef.loc[coef.feature=="intercept","coef"].item()
-age_coef = coef.loc[coef.feature=="age_in_years","coef"].item()
-episode_coef = coef.loc[coef.feature=="episode_number","coef"].item()
-sex_coef = coef.loc[coef.feature=="sex","coef"].item()
+coef = pd.read_csv("../results/tables/model_coefficients.csv")
+intercept = lr_best_model.named_steps["logisticregression"].intercept_[0]
+age_coef       = coef["age"].iloc[0]
+episode_coef   = coef["episode_number"].iloc[0]
+sex_coef       = coef["is_male"].iloc[0]
 ```
 
 ```{python}
@@ -145,13 +148,45 @@ To interpret the logistic regression model, SHAP values were computed to measure
 
 ```{python}
 #| echo: false
-import pandas as pd
+import numpy as np
+import shap
 
-shap_importance = pd.read_csv("../data/shap_importance.csv")
-shap_importance_sorted = shap_importance.sort_values("mean_abs_shap", ascending=False)
-top1 = shap_importance_sorted.iloc[0]
-top2 = shap_importance_sorted.iloc[1]
-bottom = shap_importance_sorted.iloc[-1]
+with open("../results/models/logistic_reg.pkl", "rb") as f:
+    lr_best_model = pickle.load(f)
+
+train_df = pd.read_csv("../data/processed/sepsis_train.csv")
+test_df  = pd.read_csv("../data/processed/sepsis_test.csv")
+
+X_train = train_df.drop(columns=["hospital_outcome", "hospital_outcome_cat"])
+X_test  = test_df.drop(columns=["hospital_outcome", "hospital_outcome_cat"])
+
+feature_names = lr_best_model.named_steps["columntransformer"].get_feature_names_out()
+clean_feature_names = [
+    f.replace("onehotencoder__", "")
+     .replace("standardscaler__", "")
+     .replace("sex_male", "is_male")
+     .replace("sex_female", "is_female")
+    for f in feature_names
+]
+
+X_train_s = lr_best_model.named_steps["columntransformer"].transform(X_train)
+X_test_s  = lr_best_model.named_steps["columntransformer"].transform(X_test)
+
+logreg = lr_best_model.named_steps["logisticregression"]
+explainer = shap.LinearExplainer(logreg, X_train_s)
+shap_values = explainer.shap_values(X_test_s)
+
+mean_abs_shap = np.abs(shap_values).mean(axis=0)
+
+shap_importance = (
+    pd.DataFrame({"feature": clean_feature_names, "mean_abs_shap": mean_abs_shap})
+    .sort_values("mean_abs_shap", ascending=False)
+    .reset_index(drop=True)
+)
+
+top1   = shap_importance.iloc[0]
+top2   = shap_importance.iloc[1]
+bottom = shap_importance.iloc[-1]
 ```
 
 The SHAP results confirm that **`{python} top1['feature']`** is the most influential feature, with a mean SHAP value of **`{python} f"{top1['mean_abs_shap']:.5f}"`**, indicating that it has 
