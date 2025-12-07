@@ -51,7 +51,7 @@ EDA is conducted first to see if any data wrangling is needed before proceeding 
 
 From the current train and test datasets, all the data are already clean. Age ranges from 0–100 years, Sex is encoded as male/female, and Episode Number varies between 1–5 with no missing values, so no imputation is required.
 
-![Figure 1. Age, Episode Count & Sex Distribution](../img/univariate_visualization.png){#fig-univariate width=105%}
+![Age, Episode Count & Sex Distribution](../img/univariate_visualization.png){#fig-univariate width=105%}
 
 
 @fig-univariate presents three univariate visualizations that provide an initial understanding of feature distributions and how they relate to survival outcome:
@@ -61,11 +61,11 @@ From the current train and test datasets, all the data are already clean. Age ra
 - **Sex vs Outcome counts:** The heatmap on the right displays the cross-tabulation of sex and survival outcome. Both males and females predominantly fall under the *survived* category, with similar proportions, indicating sex alone is not a strong differentiator for survival.
 
 
-![Figure 2. Relationship of Features with Outcome](../results/figures/multivariate_visualization.png){#fig-multivariate width=90%}
+![Relationship of Features with Outcome](../results/figures/multivariate_visualization.png){#fig-multivariate width=90%}
 
 @fig-multivariate presents multivariate distributions using boxplots, showing how age varies with episode count and patient sex across outcome groups.
 
-![Figure 3. Feature Correlation Heatmap](../results/figures/correlation_heatmap.png){#fig-corr width=70%}
+![Feature Correlation Heatmap](../results/figures/correlation_heatmap.png){#fig-corr width=70%}
 
 
 @fig-corr displays the correlation heatmap, confirming that age is the most strongly related feature to survival outcome, while sex and episode count show weaker associations.
@@ -151,7 +151,7 @@ The SHAP summary plot below visualizes how each feature contributes to the logis
 The longest bar corresponds to the feature with the highest average absolute SHAP impact — meaning it contributes 
 the most to shifting predictions up or down.
 
-![Figure 4. SHAP Feature Importance Summary](../results/figures/shap_values_plot.png){#fig-shap width=90%}
+![SHAP Feature Importance Summary](../results/figures/shap_values_plot.png){#fig-shap width=90%}
 
 From the plot, **Age is clearly the most influential feature**, showing the largest magnitude of SHAP values. This means 
 that changes in age have the strongest effect on predicted survival probability. **Episode number** has noticeably lower 
