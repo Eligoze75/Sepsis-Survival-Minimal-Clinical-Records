@@ -47,7 +47,7 @@ def compute_descriptive_stats(df):
         df (pandas.DataFrame): The input DataFrame containing the dataset to analyze.
 
     Returns:
-        None: This function click.echos results but does not return any value.
+        None: This function displays results but does not return any value.
     """
     click.echo("\n[Descriptive statistics] summary:\n\n")
     click.echo(df.describe())
