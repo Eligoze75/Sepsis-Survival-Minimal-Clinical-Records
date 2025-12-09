@@ -1,7 +1,13 @@
 services:
-  analysis:
-    image: python:3.12
-    working_dir: /app
+  # run jupyter notebook inside jupyter
+  jupyter-notebook:
+    image:  eligoze75/sepsis-survival-minimal-clinical-records:4509b76
+    ports:
+      - "8888:8888"
     volumes:
-      - .:/app
-    command: bash
+      - .:/home/jovyan
+    deploy:
+      resources:
+        limits:
+          memory: 5G
+    platform: linux/amd64
