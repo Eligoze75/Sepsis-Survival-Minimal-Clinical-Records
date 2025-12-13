@@ -35,6 +35,35 @@ CLF_SHAP_PLOT = os.path.join(PAR_PATH, "results/figures/shap_values_plot.png")
 
 
 def load_data(train_filename, test_filename):
+    """
+    Load training and testing datasets from CSV files.
+    These datasets will be split into feature data frames and target series. 
+    Only columns specified in FEATURES and TARGET will be imported. 
+
+    Status messages are printed using `click.echo` during execution.
+
+    Parameters
+    ----------
+    train_filename : str or pathlib.Path
+        Path to the training dataset CSV file.
+    test_filename : str or pathlib.Path
+        Path to the testing dataset CSV file.
+
+    Returns
+    -------
+    X_train : pandas.DataFrame
+        Feature matrix for the training dataset containing columns specified
+        in `FEATURES`.
+    X_test : pandas.DataFrame
+        Feature matrix for the testing dataset containing columns specified
+        in `FEATURES`.
+    y_train : pandas.Series
+        Target vector for the training dataset corresponding to `TARGET`.
+    y_test : pandas.Series
+        Target vector for the testing dataset corresponding to `TARGET`.
+
+    """
+
     # Read and split the data
     click.echo("[DATA COLLECTION] Reading train and test datasets...")
     train_df = pd.read_csv(train_filename)
