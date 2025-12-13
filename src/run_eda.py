@@ -4,6 +4,7 @@ import seaborn as sns
 import click
 import os
 
+
 PAR_PATH = os.path.dirname(os.path.dirname(__file__))
 TRAIN_FILENAME = os.path.join(PAR_PATH, "data/processed/sepsis_train.csv")
 UNIVARIATE_FILENAME = "univariate_visualization"
@@ -123,12 +124,8 @@ def get_univariate_subplots(df, save_filename, extension, show):
     axes[2].set_ylabel("Sex")
 
     plt.tight_layout()
-    plt.savefig(
-        f"results/figures/{save_filename}.{extension}",
-        dpi=300,
-        bbox_inches="tight",
-        transparent=True,
-    )
+    save_fig("results/figures", save_filename, extension)
+    
     if show:
         plt.show()
 
@@ -198,12 +195,8 @@ def get_multivariate_subplots(df, save_filename, extension, show):
     )
 
     plt.tight_layout()
-    plt.savefig(
-        f"results/figures/{save_filename}.{extension}",
-        dpi=300,
-        bbox_inches="tight",
-        transparent=True,
-    )
+    save_fig("results/figures", save_filename, extension)
+
     if show:
         plt.show()
 
@@ -249,12 +242,8 @@ def get_corr_heatmap(df, use_cols, save_filename, extension, show):
     )
     plt.title("Correlation Heatmap of Sepsis Numerical Features")
     plt.tight_layout()
-    plt.savefig(
-        f"results/figures/{save_filename}.{extension}",
-        dpi=300,
-        bbox_inches="tight",
-        transparent=True,
-    )
+    save_fig("results/figures", save_filename, extension)
+    
     if show:
         plt.show()
 
