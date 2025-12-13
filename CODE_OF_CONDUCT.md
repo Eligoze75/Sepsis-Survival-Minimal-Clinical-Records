@@ -27,7 +27,7 @@ All members are expected to refrain from all forms of unacceptable conduct to ma
 If a participant engages in inappropriate behavior, they will be asked to stop and comply immediately. If the behavior continues or the violation is serious, the matter may be escalated to the teaching team or course faculty. Continued violations may result in removal from the project.
 
 # Reporting Concerns and Guidelines  
-If a participant violates the Code of Conduct, please report the incident to one of the project instructors listed in the course repository (https://github.ubc.ca/mds-2025-26/DSCI_522_dsci-workflows_students/tree/master) or contact the DSCI 522 course instructor directly (Kehan Sky Cheng and Daniel Chen). All reports will be treated seriously and handled with discretion.
+If a participant violates this Code of Conduct, the incident may be reported by contacting Raghav Gupta at raghav90@student.ubc.ca. All reports will be treated seriously and handled with discretion. The Group 15 team will review the situation and take actions it considers appropriate given the circumstances.
 
 Adaptation Notes:
 Adapted from the Python Community Code of Conduct. (https://policies.python.org/python.org/code-of-conduct/)

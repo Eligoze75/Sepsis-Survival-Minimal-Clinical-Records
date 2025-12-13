@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.24">
+<meta name="generator" content="quarto-1.7.33">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -44,19 +44,18 @@ div.csl-indent {
 }</style>
 
 
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="sepsis-predictor-report_files/libs/clipboard/clipboard.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="sepsis-predictor-report_files/libs/clipboard/clipboard.min.js"></script>
 <script src="sepsis-predictor-report_files/libs/quarto-html/quarto.js" type="module"></script>
 <script src="sepsis-predictor-report_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="sepsis-predictor-report_files/libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="sepsis-predictor-report_files/libs/quarto-html/popper.min.js"></script>
 <script src="sepsis-predictor-report_files/libs/quarto-html/tippy.umd.min.js"></script>
 <script src="sepsis-predictor-report_files/libs/quarto-html/anchor.min.js"></script>
 <link href="sepsis-predictor-report_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="sepsis-predictor-report_files/libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="sepsis-predictor-report_files/libs/quarto-html/quarto-syntax-highlighting-ea385d0e468b0dd5ea5bf0780b1290d9.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="sepsis-predictor-report_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="sepsis-predictor-report_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="sepsis-predictor-report_files/libs/bootstrap/bootstrap-9e3ffae467580fdb927a41352e75a2e0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
-<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
+<link href="sepsis-predictor-report_files/libs/bootstrap/bootstrap-81267100e462c21b3d6c0d5bf76a3417.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
 
 <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
@@ -79,12 +78,13 @@ div.csl-indent {
   </ul></li>
   <li><a href="#model-interpretation" id="toc-model-interpretation" class="nav-link" data-scroll-target="#model-interpretation"><span class="header-section-number">4</span> Model Interpretation</a>
   <ul class="collapse">
-  <li><a href="#logistic-regression-coefficients" id="toc-logistic-regression-coefficients" class="nav-link" data-scroll-target="#logistic-regression-coefficients"><span class="header-section-number">4.1</span> Logistic Regression Coefficients</a></li>
+  <li><a href="#logistic-regression-model-specification" id="toc-logistic-regression-model-specification" class="nav-link" data-scroll-target="#logistic-regression-model-specification"><span class="header-section-number">4.1</span> Logistic Regression Model Specification</a></li>
+  <li><a href="#logistic-regression-coefficients" id="toc-logistic-regression-coefficients" class="nav-link" data-scroll-target="#logistic-regression-coefficients"><span class="header-section-number">4.2</span> Logistic Regression Coefficients</a></li>
   </ul></li>
   <li><a href="#results-discussion" id="toc-results-discussion" class="nav-link" data-scroll-target="#results-discussion"><span class="header-section-number">5</span> Results &amp; Discussion</a></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">6</span> References</a></li>
   </ul>
-<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="..\sepsis-predictor-report.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="../sepsis-predictor-report.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
 </div>
 <main class="content" id="quarto-document-content">
 
@@ -133,10 +133,10 @@ div.csl-indent {
 <div id="fig-univariate" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-univariate-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="../img/univariate_visualization.png" class="img-fluid figure-img" style="width:105.0%">
+<img src="../results/figures/univariate_visualization.png" class="img-fluid figure-img" style="width:105.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-univariate-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: Age, Episode Count &amp; Sex Distribution
+Figure&nbsp;1: (a) Distribution of patient age by survival outcome, with age (years) on the x-axis and patient count on the y-axis. (b) Distribution of prior sepsis episode counts, with episode number on the x-axis and patient count on the y-axis. (c) Heatmap showing counts of survival outcomes by sex, where darker colors indicate higher frequencies
 </figcaption>
 </figure>
 </div>
@@ -191,11 +191,11 @@ Figure&nbsp;3: Feature Correlation Heatmap
 Table&nbsp;1: Logistic Regression performance on train/test sets.
 </figcaption>
 <div aria-describedby="tbl-metrics-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell-output cell-output-display" data-execution_count="10">
+<div class="cell-output cell-output-display" data-execution_count="6">
 <div>
 
 
-<table class="dataframe do-not-create-environment cell caption-top table table-sm table-striped small" data-border="1">
+<table class="dataframe do-not-create-environment cell caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -208,7 +208,7 @@ Table&nbsp;1: Logistic Regression performance on train/test sets.
 </thead>
 <tbody>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">0</th>
+<td data-quarto-table-cell-role="th">0</td>
 <td>train</td>
 <td>0.70589</td>
 <td>0.926455</td>
@@ -216,7 +216,7 @@ Table&nbsp;1: Logistic Regression performance on train/test sets.
 <td>0.961823</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">1</th>
+<td data-quarto-table-cell-role="th">1</td>
 <td>test</td>
 <td>0.58812</td>
 <td>0.810719</td>
@@ -240,8 +240,12 @@ This explains the weak ROC AUC: the model struggles to rank classes effectively 
 </section>
 <section id="model-interpretation" class="level2" data-number="4">
 <h2 data-number="4" class="anchored" data-anchor-id="model-interpretation"><span class="header-section-number">4</span> Model Interpretation</h2>
-<section id="logistic-regression-coefficients" class="level3" data-number="4.1">
-<h3 data-number="4.1" class="anchored" data-anchor-id="logistic-regression-coefficients"><span class="header-section-number">4.1</span> Logistic Regression Coefficients</h3>
+<section id="logistic-regression-model-specification" class="level3" data-number="4.1">
+<h3 data-number="4.1" class="anchored" data-anchor-id="logistic-regression-model-specification"><span class="header-section-number">4.1</span> Logistic Regression Model Specification</h3>
+<p>Logistic regression was used to model the probability of survival based on age, sex, and sepsis episode number. Model coefficients were estimated using maximum likelihood estimation (MLE), where the log-odds of survival are expressed as a linear combination of input features. Continuous variables (age and episode number) were standardized, and sex was one-hot encoded prior to model fitting. L2 regularization was applied to reduce overfitting. The final model corresponds to the hyperparameter setting with the highest mean cross-validated performance and was refit on the full training dataset.</p>
+</section>
+<section id="logistic-regression-coefficients" class="level3" data-number="4.2">
+<h3 data-number="4.2" class="anchored" data-anchor-id="logistic-regression-coefficients"><span class="header-section-number">4.2</span> Logistic Regression Coefficients</h3>
 <p>The final logistic model learned the relationship between features and survival:</p>
 <p>logit(p) = 2.993 -1.069·Age -0.018·Episode Number -0.178·Is Male</p>
 <p>Even though the model underperforms, we can still interpret the learned coefficients:</p>
@@ -251,9 +255,9 @@ This explains the weak ROC AUC: the model struggles to rank classes effectively 
 <li><strong>Episode number has a small coefficient (-0.018)</strong>, suggesting only minor influence on survival.</li>
 <li><strong>Being male has a coefficient of (-0.178)</strong>, indicating slightly lower survival odds than females.</li>
 </ul>
-<section id="shap-explanation-and-feature-importance" class="level4" data-number="4.1.1">
-<h4 data-number="4.1.1" class="anchored" data-anchor-id="shap-explanation-and-feature-importance"><span class="header-section-number">4.1.1</span> SHAP Explanation and Feature Importance</h4>
-<p>[<strong>SHAP</strong> <em>(SHapley Additive exPlanations)</em>] <span class="citation" data-cites="lundberg2025shap">(<a href="#ref-lundberg2025shap" role="doc-biblioref">Lundberg, Lee, and contributors 2025</a>)</span> is a method used to explain how individual features contribute to a machine learning model’s predictions. It assigns a numerical value to each feature that represents how much that feature pushes the prediction up or down. A higher SHAP value indicates a higher level of importance, meaning the feature has a stronger influence on the model’s decision. SHAP is particularly useful for understanding both global feature importance and how a single observation is being predicted. In this analysis, SHAP values are used to determine which features are most important in the logistic regression model predicting sepsis hospital survival.</p>
+<section id="shap-explanation-and-feature-importance" class="level4" data-number="4.2.1">
+<h4 data-number="4.2.1" class="anchored" data-anchor-id="shap-explanation-and-feature-importance"><span class="header-section-number">4.2.1</span> SHAP Explanation and Feature Importance</h4>
+<p><strong>SHAP</strong> <em>(SHapley Additive exPlanations)</em> <span class="citation" data-cites="lundberg2025shap">(<a href="#ref-lundberg2025shap" role="doc-biblioref">Lundberg, Lee, and contributors 2025</a>)</span> is a method used to explain how individual features contribute to a machine learning model’s predictions. It assigns a numerical value to each feature that represents how much that feature pushes the prediction up or down. A higher SHAP value indicates a higher level of importance, meaning the feature has a stronger influence on the model’s decision. SHAP is particularly useful for understanding both global feature importance and how a single observation is being predicted. In this analysis, SHAP values are used to determine which features are most important in the logistic regression model predicting sepsis hospital survival.</p>
 <p>To interpret the logistic regression model, SHAP values were computed to measure the contribution of each feature to the model’s output. The model includes three predictors: age_in_years, sex, and episode_number. The SHAP values represent the average magnitude by which each feature affects the prediction across all test samples.</p>
 <p>The SHAP summary plot below visualizes how each feature contributes to the logistic regression model’s output. The longest bar corresponds to the feature with the highest average absolute SHAP impact — meaning it contributes the most to shifting predictions up or down.</p>
 <div id="fig-shap" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -352,14 +356,13 @@ Society, Canadian Cancer. 2024. <span>“Sepsis and Septic Shock.”</span> <a h
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-      const outerScaffold = trigger.parentElement.cloneNode(true);
-      const codeEl = outerScaffold.querySelector('code');
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
         }
-      }
-      return codeEl.innerText;
+        return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
