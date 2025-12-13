@@ -1,7 +1,7 @@
 services:
   # run jupyter notebook inside jupyter
   jupyter-notebook:
-    image:  eligoze75/sepsis-survival-minimal-clinical-records:4509b76
+    image:  eligoze75/sepsis-survival-minimal-clinical-records:e7e9ba3
     ports:
       - "8888:8888"
     volumes:
