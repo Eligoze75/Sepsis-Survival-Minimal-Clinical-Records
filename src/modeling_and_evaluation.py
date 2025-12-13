@@ -61,6 +61,14 @@ def load_data(train_filename, test_filename):
         Target vector for the training dataset corresponding to `TARGET`.
     y_test : pandas.Series
         Target vector for the testing dataset corresponding to `TARGET`.
+    
+    Raises
+    ------
+    FileNotFoundError
+        If either the training or testing CSV file does not exist.
+    KeyError
+        If any column specified in `FEATURES` or `TARGET` is missing from
+        either dataset.
 
     """
 
