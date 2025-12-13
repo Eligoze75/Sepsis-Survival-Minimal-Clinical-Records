@@ -27,6 +27,11 @@ def test_clean_survival_data_success(valid_df):
     assert "hospital_outcome" in cleaned.columns
     assert "hospital_outcome_cat" in cleaned.columns
 
+    # old columns removed
+    assert "age_years" not in cleaned.columns
+    assert "sex_0male_1female" not in cleaned.columns
+    assert "hospital_outcome_1alive_0dead" not in cleaned.columns
+
     # value mapping
     assert cleaned["sex"].tolist() == ["male", "female"]
     assert cleaned["hospital_outcome_cat"].tolist() == ["Survived", "Died"]
@@ -35,12 +40,11 @@ def test_clean_survival_data_success(valid_df):
 # Edge cases
 
 def test_clean_survival_data_missing_values(valid_df):
-    # introducing missing value
-    valid_df.loc[0, "age_years"] = None
+    df_with_na = valid_df.copy()
+    df_with_na.loc[0, "age_years"] = None
 
-    cleaned = _clean_survival_df(valid_df, verbose=False)
+    cleaned = _clean_survival_df(df_with_na, verbose=False)
 
-    # missing value should be preserved
     assert cleaned["age"].isna().sum() == 1
 
 
