@@ -90,6 +90,32 @@ def load_data(train_filename, test_filename):
 
 
 def model_training(X, y):
+    """
+    Trains a logistic regression classification pipeline and persists the best model.
+
+    This function builds a scikit-learn Pipeline composed of:
+    - A ColumnTransformer that standardizes numeric features and one-hot encodes
+      categorical features.
+    - A LogisticRegression classifier.
+
+    Hyperparameters are optimized using RandomizedSearchCV with cross-validation.
+    The best-performing pipeline is saved to disk and returned.
+
+    Args:
+        X (pd.DataFrame): Training feature matrix containing numeric and categorical
+            columns defined in NUMERIC_FEATURES and CATEGORICAL_FEATURES.
+            Must not contain missing values.
+        y (pd.Series): Target variable corresponding to `X`.
+            Must be aligned with `X` and contain no missing values.
+
+    Returns:
+        sklearn.pipeline.Pipeline: The fitted pipeline with the best hyperparameters
+        found during hyperparameter optimization.
+
+    Raises:
+        ValueError: If `X` or `y` contain missing values or incompatible data types.
+        RuntimeError: If model training or hyperparameter tuning fails.
+    """
     # Create preprocessor
     ## As suggested by EDA, we standardize numeric features and one-hot encode categorical features
     click.echo("[FEATURE ENGINEERING] Creating column transformer...")
