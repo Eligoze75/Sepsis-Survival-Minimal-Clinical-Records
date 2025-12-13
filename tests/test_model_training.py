@@ -7,9 +7,6 @@ import os
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 from src.modeling_and_evaluation import model_training
 
-PAR_PATH = os.path.dirname(os.path.dirname(__file__))
-MODEL_PATH = os.path.join(PAR_PATH, "results/models/logistic_reg.pkl")
-
 
 @pytest.fixture
 def valid_training_data():
