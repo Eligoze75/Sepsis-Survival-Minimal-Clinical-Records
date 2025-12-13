@@ -51,7 +51,7 @@ EDA is conducted first to see if any data wrangling is needed before proceeding 
 
 From the current train and test datasets, all the data are already clean. Age ranges from 0–100 years, Sex is encoded as male/female, and Episode Number varies between 1–5 with no missing values, so no imputation is required.
 
-![Age, Episode Count & Sex Distribution](../img/univariate_visualization.png){#fig-univariate width=105%}
+![Age, Episode Count & Sex Distribution](../results/figures/univariate_visualization.png){#fig-univariate width=105%}
 
 
 @fig-univariate presents three univariate visualizations that provide an initial understanding of feature distributions and how they relate to survival outcome:

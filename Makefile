@@ -1,6 +1,6 @@
 .PHONY : all report clean
 
-all: 01_data_loading \
+all: 01_data_loading_train \
 	01_data_loading_test \
 	02_data_transformation \
 	03_run_eda \
