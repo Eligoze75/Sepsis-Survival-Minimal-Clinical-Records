@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import click
 import os
-from src.write_csv import save_fig
+
 
 PAR_PATH = os.path.dirname(os.path.dirname(__file__))
 TRAIN_FILENAME = os.path.join(PAR_PATH, "data/processed/sepsis_train.csv")
