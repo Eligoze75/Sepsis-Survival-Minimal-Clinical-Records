@@ -124,12 +124,8 @@ def get_univariate_subplots(df, save_filename, extension, show):
     axes[2].set_ylabel("Sex")
 
     plt.tight_layout()
-    save_fig(
-        f"results/figures/{save_filename}.{extension}",
-        dpi=300,
-        bbox_inches="tight",
-        transparent=True,
-    )
+    save_fig("results/figures", save_filename, extension)
+    
     if show:
         plt.show()
 
@@ -199,12 +195,8 @@ def get_multivariate_subplots(df, save_filename, extension, show):
     )
 
     plt.tight_layout()
-    plt.savefig(
-        f"results/figures/{save_filename}.{extension}",
-        dpi=300,
-        bbox_inches="tight",
-        transparent=True,
-    )
+    save_fig("results/figures", save_filename, extension)
+
     if show:
         plt.show()
 
