@@ -50,7 +50,7 @@ def test_trained_model_can_predict(valid_training_data):
 def test_model_training_fails_with_null_values(valid_training_data):
     """
     Given training data with null values when model_training is called
-    then it should raise a ValueError
+    then it should raise a ValueError.
     """
     X, y = valid_training_data
     X.loc[0, "age"] = None  # introduce null
@@ -59,10 +59,10 @@ def test_model_training_fails_with_null_values(valid_training_data):
         model_training(X, y)
 
 
-def test_model_training_fails_with_null_values(valid_training_data):
+def test_model_training_fails_with_unvalid_category(valid_training_data):
     """
-    Given training data with null values when model_training is called
-    then it should raise a ValueError
+    Given training data with an unseen and unvalid category
+    when model_training is called then it should raise a ValueError.
     """
     X, y = valid_training_data
     X.loc[0, "sex"] = 3  # introduce unvalid category
