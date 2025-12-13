@@ -76,7 +76,6 @@ Sepsis-Survival-Minimal-Clinical-Records/
 ├── LICENSE               
 └── README.md
                                   
-
 ```
 
 ## Dependencies
@@ -147,16 +146,15 @@ docker compose up
 
 ### **Developer dependencies**
 
-- `python` (version 3.12)
+-   `python` (version 3.12)
 
-- `conda` (version 25.7.0 or higher)
+-   `conda` (version 25.7.0 or higher)
 
-- `conda-lock` (version 3.0.4 or higher)
+-   `conda-lock` (version 3.0.4 or higher)
 
-- `quarto` (version 1.8.26)
+-   `quarto` (version 1.8.26)
 
-- `jupyterlab` (version 4.4.10)
-
+-   `jupyterlab` (version 4.4.10)
 
 ### **Adding a new dependency**
 
@@ -185,6 +183,12 @@ We welcome contributions! Whether you're a data scientist, clinician, or machine
 Thank you for exploring this project! We hope this analysis provides valuable insights into sepsis prediction and inspires further research. Whether you're here to learn, contribute, or simply explore, we appreciate your interest.
 
 Happy learning! 🎓
+
+## License
+
+The Sepsis Predictor report is licensed under the [Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)](https://creativecommons.org/licenses/by-nc-nd/4.0/)[ license](https://creativecommons.org/licenses/by-nc-nd/4.0/). The project code contained within this repository is licensed under the MIT license.
+
+If you use any part of this project, please provide attribution and a link to this webpage. Please refer to the [license](https://github.com/Eligoze75/Sepsis-Survival-Minimal-Clinical-Records/blob/eli_merging_everything/LICENSE) file for more information.
 
 ------------------------------------------------------------------------
 
