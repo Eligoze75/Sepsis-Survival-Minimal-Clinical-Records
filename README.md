@@ -59,10 +59,11 @@ Sepsis-Survival-Minimal-Clinical-Records/
 │       ├── target_valcounts.csv
 │       └── train_summary.csv
 └── src
-│   ├── 01_data_loading.py
-│   ├── 02_data_transformation.py
-│   ├── 03_run_eda.py
-│   ├── 04_modeling_and_evaluation.py
+│   ├── data_loading.py
+│   ├── data_transformation.py
+│   ├── run_eda.py
+│   ├── modeling_and_evaluation.py
+│   ├── save_fig.py
 │   ├── sepsis-predictor-report.ipynb.                  # Main analysis notebook
 │   ├── utils.py                                        
 │   └── validations.py
@@ -107,26 +108,26 @@ docker compose up
     1.  Load raw datasets - Run twice: once for train, once for test.
 
         ``` bash
-        python src/01_data_loading.py 
-        python src/01_data_loading.py --filename s41598-020-73558-3_sepsis_survival_study_cohort.csv
+        python src/data_loading.py 
+        python src/data_loading.py --filename s41598-020-73558-3_sepsis_survival_study_cohort.csv
         ```
 
     2.  Transform datasets - Processes and saves cleaned versions.
 
         ``` bash
-        python src/02_data_transformation.py
+        python src/data_transformation.py
         ```
 
     3.  Run EDA - Generates plots and descriptive stats.
 
         ``` bash
-        python src/03_run_eda.py
+        python src/run_eda.py
         ```
 
     4.  Train and evaluate the model - Fits pipeline, computes metrics and SHAP, saves model.
 
         ``` bash
-        python src/04_modeling_and_evaluation.py
+        python src/modeling_and_evaluation.py
         ```
 
     5.  Create analysis report - Generate HTML and PDF reports
