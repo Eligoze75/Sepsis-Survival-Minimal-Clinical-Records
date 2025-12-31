@@ -103,40 +103,14 @@ docker compose up
 
 2.  In the terminal output, find a URL which begins with `http://127.0.0.1:8888/lab?token=` Copy that URL and open it in your web browser.
 
-3.  To run the analysis, open a terminal and run the following commands:
-
-    1.  Load raw datasets - Run twice: once for train, once for test.
-
-        ``` bash
-        python src/data_loading.py 
-        python src/data_loading.py --filename s41598-020-73558-3_sepsis_survival_study_cohort.csv
-        ```
-
-    2.  Transform datasets - Processes and saves cleaned versions.
-
-        ``` bash
-        python src/data_transformation.py
-        ```
-
-    3.  Run EDA - Generates plots and descriptive stats.
-
-        ``` bash
-        python src/run_eda.py
-        ```
-
-    4.  Train and evaluate the model - Fits pipeline, computes metrics and SHAP, saves model.
-
-        ``` bash
-        python src/modeling_and_evaluation.py
-        ```
-
-    5.  Create analysis report - Generate HTML and PDF reports
-
-        ``` bash
-        quarto render reports/sepsis-predictor-report.qmd --to html
-        quarto render reports/sepsis-predictor-report.qmd --to pdf
-        ```
-
+3. Navigate to the project’s root directory using the command line and run the command below to restore the project to a clean state by removing all files created during previous analysis runs.
+``` bash
+make clean
+```
+4. Run the following command from the project root to execute the full analysis.
+``` bash
+make all
+```
 ### Clean up
 
 1.  To stop the container and remove associated resources, press `Ctrl` + `C` in the terminal where the container is running, then enter `docker compose rm`
