@@ -149,6 +149,13 @@ make all
 
 6.  Submit a pull request to have these updates merged into the `main` branch.
 
+
+## Running tests
+Once the environment is set up (using either Docker or conda), run the following command to execute all tests:
+```bash
+pytest tests/
+```
+
 ## Contributing
 
 We welcome contributions! Whether you're a data scientist, clinician, or machine learning enthusiast, your input can help improve this project. Please read our [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on how to contribute.
